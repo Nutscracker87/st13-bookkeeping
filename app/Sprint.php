@@ -1,0 +1,23 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Sprint extends Model
+{
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'project_id', 'rate', 'rate_type', 'worked_time', 'payment_status',
+        'notes', 'started_at', 'closed_at', 'currency'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class)->select(['id', 'name', 'email', 'is_active']);
+    }
+}
