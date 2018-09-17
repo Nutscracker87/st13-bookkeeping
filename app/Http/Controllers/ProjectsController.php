@@ -15,7 +15,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        return Project::all();
+        return Project::with('owner')->get();
     }
 
     /**
@@ -110,8 +110,13 @@ class ProjectsController extends Controller
      * @param  \App\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy($id)
     {
-        //
+        // Get customer
+        $project = Project::findOrFail($id);
+
+        if($project->delete()){
+            return $project;
+        }
     }
 }

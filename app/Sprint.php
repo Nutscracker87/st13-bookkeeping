@@ -20,4 +20,9 @@ class Sprint extends Model
     {
         return $this->belongsTo(User::class)->select(['id', 'name', 'email', 'is_active']);
     }
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class)->select(['id', 'name']);
+    }    
 }

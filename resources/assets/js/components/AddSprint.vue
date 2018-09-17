@@ -5,11 +5,19 @@
       <div class="form-row">
         <div class="form-group col-md-4">
           <label for="sprint-project">Project</label>
-          <select class="form-control" id="sprint-project" name="project" v-model="form.project">
-            <option value="1" selected>One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+          <select 
+              v-bind:class="['form-control', form.errors.has('project') ? 'is-invalid' : '']"  
+              id="sprint-project" 
+              name="project" 
+              @change="setSprintRate($event.target.value)" 
+              v-model="form.project">
+              <option v-for="project in projects" 
+                  :key="project.id" v-bind:value="project.id">
+                  {{ project.name }}
+              </option>
           </select>
+          <div class="invalid-feedback" v-if="form.errors.has('project')" 
+               v-text="form.errors.get('project')"></div>                                                
         </div>
         <div class="form-group col-md-2">
           <label for="sprint-rate">Rate</label>
@@ -79,7 +87,7 @@ export default {
     return {
       form: new Form({
         user_id: { value: this.user, default: this.user },
-        project: { value: "1", default: "1" },
+        project: { value: "", default: "" },
         // project: {value: "this.project.id" , default: 'this.project.id'},
         rate: { value: "", default: "" },
         currency: { value: "$", default: "$" },
@@ -89,17 +97,34 @@ export default {
         closed: { value: false, default: false },
         closed_date: { value: "", default: "" },
         payment_status: { value: "1", default: "1" }
-      })
+      }),
+      projects: [],
     };
   },
   methods: {
+    setSprintRate(projectId) {
+      var project = this.projects.find(item => item.id == projectId);
+      this.form.rate = project.rate ? project.rate : '';
+      this.form.currency = project.currency ? project.currency : '';
+      this.form.rate_type = project.rate_type  ? project.rate_type : '';
+
+    },
     onSubmit() {
       this.form
         .submit("post", "/api/sprints")
         .then(sprint => this.$emit('sprint_added', sprint))
         .catch(errors => console.log(errors));
     }
-  }
+  },
+  created() {
+    axios.get("/api/projects").then(({ data }) => {
+      this.projects = data;
+      this.form.project = this.projects.length > 0 ? this.projects[0].id : '';
+      this.form.rate = this.projects.length > 0 ? this.projects[0].rate : '';
+      this.form.currency = this.projects.length > 0 ? this.projects[0].currency : '';
+      this.form.rate_type = this.projects.length > 0 ? this.projects[0].rate_type : '';
+    });
+  }  
 };
 </script>
 

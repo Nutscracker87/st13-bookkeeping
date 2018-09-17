@@ -16,7 +16,7 @@ class SprintsController extends Controller
      */
     public function index()
     {
-        return Sprint::all();
+        return Sprint::with('project')->get();
     }
 
     /**
