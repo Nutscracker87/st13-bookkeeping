@@ -6,8 +6,7 @@
 
     <div class="collapse navbar-collapse" id="navbarColor02">
       <ul class="navbar-nav mr-auto">
-        <router-link tag="li" class="nav-item" active-class="active" to="/" exact><a class="nav-link">Home</a></router-link>
-        <router-link tag="li" class="nav-item" active-class="active" to="/workers"><a class="nav-link">Workers</a></router-link>
+        <router-link tag="li" class="nav-item" active-class="active" to="/workers" exact><a class="nav-link">Workers</a></router-link>
         <router-link tag="li" class="nav-item" active-class="active" to="/customers"><a class="nav-link">Customers</a></router-link>   
         <router-link tag="li" class="nav-item" active-class="active" to="/projects"><a class="nav-link">Projects</a></router-link>   
         <router-link tag="li" class="nav-item" active-class="active" to="/statistics"><a class="nav-link">Statistics</a></router-link>   
