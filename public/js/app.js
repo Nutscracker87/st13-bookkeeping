@@ -84242,6 +84242,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -84254,7 +84262,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       form: new Form({
         user_id: { value: this.user, default: this.user },
-        project: { value: "1", default: "1" },
+        project: { value: "", default: "" },
         // project: {value: "this.project.id" , default: 'this.project.id'},
         rate: { value: "", default: "" },
         currency: { value: "$", default: "$" },
@@ -84264,11 +84272,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         closed: { value: false, default: false },
         closed_date: { value: "", default: "" },
         payment_status: { value: "1", default: "1" }
-      })
+      }),
+      projects: []
     };
   },
 
   methods: {
+    setSprintRate: function setSprintRate(projectId) {
+      var project = this.projects.find(function (item) {
+        return item.id == projectId;
+      });
+      this.form.rate = project.rate ? project.rate : '';
+      this.form.currency = project.currency ? project.currency : '';
+      this.form.rate_type = project.rate_type ? project.rate_type : '';
+    },
     onSubmit: function onSubmit() {
       var _this = this;
 
@@ -84278,6 +84295,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return console.log(errors);
       });
     }
+  },
+  created: function created() {
+    var _this2 = this;
+
+    axios.get("/api/projects").then(function (_ref) {
+      var data = _ref.data;
+
+      _this2.projects = data;
+      _this2.form.project = _this2.projects.length > 0 ? _this2.projects[0].id : '';
+      _this2.form.rate = _this2.projects.length > 0 ? _this2.projects[0].rate : '';
+      _this2.form.currency = _this2.projects.length > 0 ? _this2.projects[0].currency : '';
+      _this2.form.rate_type = _this2.projects.length > 0 ? _this2.projects[0].rate_type : '';
+    });
   }
 });
 
@@ -84324,36 +84354,59 @@ var render = function() {
                     expression: "form.project"
                   }
                 ],
-                staticClass: "form-control",
+                class: [
+                  "form-control",
+                  _vm.form.errors.has("project") ? "is-invalid" : ""
+                ],
                 attrs: { id: "sprint-project", name: "project" },
                 on: {
-                  change: function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.form,
-                      "project",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
-                  }
+                  change: [
+                    function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.form,
+                        "project",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    },
+                    function($event) {
+                      _vm.setSprintRate($event.target.value)
+                    }
+                  ]
                 }
               },
-              [
-                _c("option", { attrs: { value: "1", selected: "" } }, [
-                  _vm._v("One")
-                ]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "2" } }, [_vm._v("Two")]),
-                _vm._v(" "),
-                _c("option", { attrs: { value: "3" } }, [_vm._v("Three")])
-              ]
-            )
+              _vm._l(_vm.projects, function(project) {
+                return _c(
+                  "option",
+                  { key: project.id, domProps: { value: project.id } },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(project.name) +
+                        "\n            "
+                    )
+                  ]
+                )
+              })
+            ),
+            _vm._v(" "),
+            _vm.form.errors.has("project")
+              ? _c("div", {
+                  staticClass: "invalid-feedback",
+                  domProps: {
+                    textContent: _vm._s(_vm.form.errors.get("project"))
+                  }
+                })
+              : _vm._e()
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group col-md-2" }, [
@@ -85058,7 +85111,9 @@ var render = function() {
               [
                 _c("div", { staticClass: "row" }, [
                   _c("div", { staticClass: "col-sm-4" }, [
-                    _vm._v("www.callboard.treng.net (EmptySpace)")
+                    _vm._v(
+                      _vm._s(_vm.capitalizeFirstLetter(sprint.project.name))
+                    )
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "col-sm-2" }, [

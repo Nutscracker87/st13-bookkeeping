@@ -54,7 +54,7 @@ class SprintsController extends Controller
             
         ]);
 
-        return $sprint->load('user');
+        return $sprint->load('user', 'project');
 
     }
 

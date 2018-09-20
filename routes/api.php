@@ -17,8 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::get('/programmers', function (Request $request) {
-    return App\User::select(['id', 'name'])->with('sprints')->get();
+    return App\User::select(['id', 'name'])->with('sprints', 'sprints.project')->get();
 });
 
 Route::get('/sprints', 'SprintsController@index');
