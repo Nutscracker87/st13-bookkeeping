@@ -23,6 +23,6 @@ class Sprint extends Model
 
     public function project()
     {
-        return $this->belongsTo(Project::class)->select(['id', 'name']);
+        return $this->belongsTo(Project::class)->select(['id', 'name', 'customer_id']);
     }    
 }

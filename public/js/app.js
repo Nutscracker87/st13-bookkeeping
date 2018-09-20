@@ -84789,6 +84789,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -85112,7 +85114,13 @@ var render = function() {
                 _c("div", { staticClass: "row" }, [
                   _c("div", { staticClass: "col-sm-4" }, [
                     _vm._v(
-                      _vm._s(_vm.capitalizeFirstLetter(sprint.project.name))
+                      "\n                        " +
+                        _vm._s(_vm.capitalizeFirstLetter(sprint.project.name)) +
+                        " \n                        (" +
+                        _vm._s(
+                          _vm.capitalizeFirstLetter(sprint.project.owner.name)
+                        ) +
+                        ")"
                     )
                   ]),
                   _vm._v(" "),

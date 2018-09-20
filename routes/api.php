@@ -19,7 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::get('/programmers', function (Request $request) {
-    return App\User::select(['id', 'name'])->with('sprints', 'sprints.project')->get();
+    return App\User::select(['id', 'name'])->with('sprints', 'sprints.project', 'sprints.project.owner')->get();
 });
 
 Route::get('/sprints', 'SprintsController@index');

@@ -4,7 +4,9 @@
         <b-card no-body v-for="(sprint, index) in sprints" :key="index" class="mb-1">
             <b-card-header header-tag="header" class="p-1" role="tab">
                 <div class="row">
-					<div class="col-sm-4">{{ capitalizeFirstLetter(sprint.project.name) }}</div>
+					<div class="col-sm-4">
+                        {{ capitalizeFirstLetter(sprint.project.name) }} 
+                        ({{capitalizeFirstLetter(sprint.project.owner.name)}})</div>
                     <div class="col-sm-2">{{ capitalizeFirstLetter(sprint.rate_type) }} rate: {{ sprint.rate }} {{ sprint.currency }}</div>
 					<div class="col-sm-2">Total Worked: {{ minutesToTime(sprint.worked_time) }}</div>
                     <div class="col-sm-4">
