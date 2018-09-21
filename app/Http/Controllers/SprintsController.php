@@ -98,8 +98,13 @@ class SprintsController extends Controller
      * @param  \App\Sprint  $sprint
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sprint $sprint)
+    public function destroy($id)
     {
-        //
+        // Get customer
+        $sprint = Sprint::findOrFail($id);
+
+        if($sprint->delete()){
+            return $sprint;
+        }
     }
 }

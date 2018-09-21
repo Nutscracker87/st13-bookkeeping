@@ -1,7 +1,10 @@
 <template>
   <div class="sprint">
     <h4 class="card-title">Create Sprint</h4>
-    <form method="POST" action="/sprints" @submit.prevent="onSubmit" @keydown="form.errors.clear($event.target.name)">
+    <form method="POST" action="/sprints" 
+      @submit.prevent="onSubmit"
+      @keydown="form.errors.clear($event.target.name)"
+      @change="form.errors.clear($event.target.name)">
       <div class="form-row">
         <div class="form-group col-md-4">
           <label for="sprint-project">Project</label>

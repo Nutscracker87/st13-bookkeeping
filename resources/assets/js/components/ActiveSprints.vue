@@ -4,17 +4,22 @@
         <b-card no-body v-for="(sprint, index) in sprints" :key="index" class="mb-1">
             <b-card-header header-tag="header" class="p-1" role="tab">
                 <div class="row">
-					<div class="col-sm-4">
-                        {{ capitalizeFirstLetter(sprint.project.name) }} 
-                        ({{capitalizeFirstLetter(sprint.project.owner.name)}})</div>
-                    <div class="col-sm-2">{{ capitalizeFirstLetter(sprint.rate_type) }} rate: {{ sprint.rate }} {{ sprint.currency }}</div>
-					<div class="col-sm-2">Total Worked: {{ minutesToTime(sprint.worked_time) }}</div>
                     <div class="col-sm-4">
-                        <b-btn block href="#" 
-                            v-b-toggle="`sprint-${index}`" 
-                            variant="info">Finish Sprint
-                        </b-btn>
+                        {{ capitalizeFirstLetter(sprint.project.name) }} ({{capitalizeFirstLetter(sprint.project.owner.name)}})
                     </div>
+                    <div class="col-sm-2">{{ capitalizeFirstLetter(sprint.rate_type) }} rate: {{ sprint.rate }} {{ sprint.currency }}</div>
+                    <div class="col-sm-2">Total Worked: {{ minutesToTime(sprint.worked_time) }}</div>
+                    <div class="col-sm-4">
+                        <b-btn href="#" v-b-toggle="`sprint-${index}`" variant="info">
+                            Finish Sprint
+                        </b-btn>
+                        <b-button 
+                            @click.stop="$emit('confirm_delete_sprint', {data: sprint, target: $event.target})" 
+                            class="btn btn-danger">
+                            <i class="fas fa-trash-alt"></i>
+                        </b-button>
+                    </div>
+                               
                 </div>
             </b-card-header>
             <b-collapse v-bind:id="`sprint-${index}`" accordion="my-accordion" role="tabpanel">
@@ -38,7 +43,7 @@ import moment from "moment";
 
 export default {
   props: {
-    sprints: Array
+    sprints: Array,
   },
   data() {
     return {
@@ -56,13 +61,13 @@ export default {
   },
 
   methods: {
-      minutesToTime(minutes) {
-          return moment(minutes*60*1000, 'HHmmss').format('HH:mm');
-      },
+    minutesToTime(minutes) {
+      return moment(minutes * 60 * 1000, "HHmmss").format("HH:mm");
+    },
 
-      capitalizeFirstLetter(str) {
-          return str.charAt(0).toUpperCase() + str.substr(1);
-      }      
+    capitalizeFirstLetter(str) {
+      return str.charAt(0).toUpperCase() + str.substr(1);
+    },
   }
 };
 </script>

@@ -51,7 +51,9 @@
           <!-- <ul>
             <li v-for="(value, key) in row.item.sprints" :key="key">{{ key }}: {{ value }}</li>
           </ul>   -->
-          <active-sprints v-bind:sprints="row.item.sprints"></active-sprints>
+          <active-sprints 
+            v-bind:sprints="row.item.sprints" 
+            @confirm_delete_sprint="event => confirmDeleteSprint(event)"></active-sprints>
           
           <add-sprint v-bind:user="row.item.id" 
             @sprint_added="sprint => row.item.sprints.push(sprint)"></add-sprint>
@@ -69,21 +71,32 @@
     <b-modal id="modalInfo" @hide="resetModal" :title="modalInfo.title" ok-only>
       <pre>{{ modalInfo.content }}</pre>
     </b-modal>
-
+    <b-modal id="deleteModal" @hide="resetModal" :title="modalInfo.title">
+        <div class="d-block text-center">
+        {{ modalInfo.content }}
+        </div>
+        <div slot="modal-footer" class="w-100">
+            <b-btn @click="handleDeleteSprint" 
+            size="sm" class="float-right 
+            btn btn-danger mx-1">Delete</b-btn>
+            <b-btn size="sm" 
+            class="float-right" 
+            variant="primary" 
+            @click="hideDeleteModal">
+            Close
+            </b-btn>
+        </div>      
+    </b-modal>  
   </b-container>
 </template>
 
 <script>
-// import '../bootstrap';
 Vue.use(BootstrapVue);
 
 import AddSprint from '../components/AddSprint.vue';
 import ActiveSprints from '../components/ActiveSprints.vue';
 
 export default {
-    // props: {
-    //     programmers: Array
-    // },
   components: { 
     'add-sprint': AddSprint,
     'active-sprints': ActiveSprints,
@@ -132,7 +145,28 @@ export default {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length
       this.currentPage = 1
-    }
+    },
+    handleDeleteSprint() {
+      // this.$root.$emit("bv::hide::modal", "deleteModal");
+      // console.log(this.modalInfo.item);
+      axios.delete(`api/sprints/${this.modalInfo.item.id}`).then(
+        ({ data }) => {
+          let itemKey = this.items.findIndex(e => e.id == data.user_id);
+          this.items[itemKey].sprints = this.items[itemKey].sprints.filter(e => e.id !== data.id);
+          this.hideDeleteModal();
+        },
+        err => comsole.log(err)
+      );
+    },
+    hideDeleteModal() {
+      this.$root.$emit("bv::hide::modal", "deleteModal");
+    },
+    confirmDeleteSprint({data, target}) {
+      this.modalInfo.title = `Delete Sprint`;
+      this.modalInfo.content = `Are you Sure Want to Delete Sprint?`;
+      this.modalInfo.item = data;
+      this.$root.$emit("bv::show::modal", "deleteModal", target);
+    },        
   },
   created() {
       //make an ajax request to our server

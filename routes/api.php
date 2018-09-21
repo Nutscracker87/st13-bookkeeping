@@ -24,6 +24,7 @@ Route::get('/programmers', function (Request $request) {
 
 Route::get('/sprints', 'SprintsController@index');
 Route::post('/sprints','SprintsController@store');
+Route::delete('/sprints/{id}', 'SprintsController@destroy');
 
 Route::get('/customers', 'CustomersController@index');
 Route::post('/customers', 'CustomersController@store');
