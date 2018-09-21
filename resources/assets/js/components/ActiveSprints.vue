@@ -10,9 +10,11 @@
                     <div class="col-sm-2">{{ capitalizeFirstLetter(sprint.rate_type) }} rate: {{ sprint.rate }} {{ sprint.currency }}</div>
                     <div class="col-sm-2">Total Worked: {{ minutesToTime(sprint.worked_time) }}</div>
                     <div class="col-sm-4">
-                        <b-btn href="#" v-b-toggle="`sprint-${index}`" variant="info">
+
+                        <b-button variant="info" 
+                            @click.stop="$emit('finish_sprint_confirmation', sprint)">
                             Finish Sprint
-                        </b-btn>
+                        </b-button>                        
                         <b-button 
                             @click.stop="$emit('confirm_delete_sprint', {data: sprint, target: $event.target})" 
                             class="btn btn-danger">
@@ -22,7 +24,7 @@
                                
                 </div>
             </b-card-header>
-            <b-collapse v-bind:id="`sprint-${index}`" accordion="my-accordion" role="tabpanel">
+            <!-- <b-collapse v-bind:id="`sprint-${index}`" accordion="my-accordion" role="tabpanel">
                 <b-card-body>
                     <p class="card-text">
                         I start opened because
@@ -33,7 +35,7 @@
                         {{ text }}
                     </p>
                 </b-card-body>
-            </b-collapse>
+            </b-collapse> -->
         </b-card>
     </div>
 </template>
@@ -47,16 +49,16 @@ export default {
   },
   data() {
     return {
-      text: `
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-        brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
-        tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-        assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
-        wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-        vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic
-        synth nesciunt you probably haven't heard of them accusamus labore VHS.
-      `
+    //   text: `
+    //     Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+    //     richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
+    //     brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
+    //     tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
+    //     assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
+    //     wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
+    //     vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic
+    //     synth nesciunt you probably haven't heard of them accusamus labore VHS.
+    //   `
     };
   },
 

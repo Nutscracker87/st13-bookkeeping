@@ -29,8 +29,13 @@ class User extends Authenticatable
         'password', 'remember_token', 'api_token'
     ];
 
+    public function activeSprints()
+    {
+        return $this->hasMany(Sprint::class)->whereNull('sprints.closed_at');
+    }
+
     public function sprints()
     {
         return $this->hasMany(Sprint::class);
-    }
+    }    
 }

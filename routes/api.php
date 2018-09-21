@@ -19,11 +19,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::get('/programmers', function (Request $request) {
-    return App\User::select(['id', 'name'])->with('sprints', 'sprints.project', 'sprints.project.owner')->get();
+    return App\User::select(['id', 'name'])
+        ->with('activeSprints', 'activeSprints.project', 'activeSprints.project.owner')
+        ->get();
 });
 
 Route::get('/sprints', 'SprintsController@index');
 Route::post('/sprints','SprintsController@store');
+Route::patch('/sprints', 'SprintsController@update');
 Route::delete('/sprints/{id}', 'SprintsController@destroy');
 
 Route::get('/customers', 'CustomersController@index');

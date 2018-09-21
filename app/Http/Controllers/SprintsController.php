@@ -16,7 +16,7 @@ class SprintsController extends Controller
      */
     public function index()
     {
-        return Sprint::with('project')->get();
+        return Sprint::whereNull('closed_at')->with('project')->get();
     }
 
     /**
@@ -37,8 +37,8 @@ class SprintsController extends Controller
         $input = $request->all();
 
         $dateStart = $input['started_at']
-                ? \Carbon\Carbon::parse($input['started_at'])->tz('UTC'):
-                null;
+                ? \Carbon\Carbon::parse($input['started_at'])->tz('UTC') :
+                \Carbon\Carbon::now()->tz('UTC');
 
         $sprint = User::find($input['user_id'])->sprints()->create([
             // 'user_id' => $request->input('user_id'),
@@ -87,9 +87,37 @@ class SprintsController extends Controller
      * @param  \App\Sprint  $sprint
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Sprint $sprint)
+    public function update(Request $request)
     {
-        //
+        $this->validate($request, [
+            'project' => 'required',
+            'rate' => 'required|integer|min:0'
+        ]);
+
+
+        $input = $request->all();
+
+        $dateClose = $input['closed_date']
+                ? \Carbon\Carbon::parse($input['closed_date'])->tz('UTC'):
+                \Carbon\Carbon::now()->tz('UTC');
+        
+        $sprint = Sprint::findOrFail($input['sprint_id']);
+
+        $dateStart = $input['started_at']
+            ? \Carbon\Carbon::parse($input['started_at'])->tz('UTC') :
+            $sprint->started_at;        
+        
+        $sprint->rate = $request->input('rate');
+        $sprint->currency = $request->input('currency');
+        $sprint->rate_type = $request->input('rate_type', 'hourly');
+        $sprint->worked_time = $request->input('worked_time', 0);
+        $sprint->payment_status =  $request->input('payment_status', false);
+        $sprint->notes = $request->input('notes', null);
+        $sprint->closed_at = $dateClose;
+        
+        $sprint->save();
+
+        return $sprint->load('user', 'project','project.owner');
     }
 
     /**
