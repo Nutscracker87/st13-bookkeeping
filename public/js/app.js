@@ -85758,7 +85758,7 @@ var render = function() {
         _c(
           "button",
           {
-            staticClass: "btn btn-primary mb-2",
+            staticClass: "btn btn-success mb-2",
             attrs: { type: "submit", disabled: _vm.form.errors.any() }
           },
           [_vm._v("Finish Sprint")]

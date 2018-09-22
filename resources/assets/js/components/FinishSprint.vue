@@ -58,7 +58,7 @@
             <b-button @click.stop="$emit('cancel_finish_sprint')" class="btn btn-primary mb-2">
                 Cancel
             </b-button>
-            <button type="submit" class="btn btn-primary mb-2" :disabled="form.errors.any()">Finish Sprint</button>
+            <button type="submit" class="btn btn-success mb-2" :disabled="form.errors.any()">Finish Sprint</button>
         </form>
     </div>
 </template>
