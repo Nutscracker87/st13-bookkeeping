@@ -8,7 +8,8 @@
       <ul class="navbar-nav mr-auto">
         <router-link tag="li" class="nav-item" active-class="active" to="/workers" exact><a class="nav-link">Workers</a></router-link>
         <router-link tag="li" class="nav-item" active-class="active" to="/customers"><a class="nav-link">Customers</a></router-link>   
-        <router-link tag="li" class="nav-item" active-class="active" to="/projects"><a class="nav-link">Projects</a></router-link>   
+        <router-link tag="li" class="nav-item" active-class="active" to="/projects"><a class="nav-link">Projects</a></router-link>
+        <router-link tag="li" class="nav-item" active-class="active" to="/income"><a class="nav-link">Income</a></router-link>
         <router-link tag="li" class="nav-item" active-class="active" to="/statistics"><a class="nav-link">Statistics</a></router-link>   
       </ul>
       {{-- <form class="form-inline">

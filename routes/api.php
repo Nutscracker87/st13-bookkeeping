@@ -39,3 +39,4 @@ Route::post('/projects', 'ProjectsController@store');
 Route::patch('/projects', 'ProjectsController@update');
 Route::delete('/projects/{id}', 'ProjectsController@destroy');
 
+Route::get('/payments', 'PaymentsController@index');
