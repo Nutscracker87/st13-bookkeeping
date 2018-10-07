@@ -16,7 +16,11 @@ let routes = [
     {
         path: '/projects',
         component: require('./views/Projects')
-    }       
+    },
+    {
+        path: '/income',
+        component: require('./views/Income')
+    },         
 ];
 
 export default new VueRouter({
