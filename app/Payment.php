@@ -12,10 +12,10 @@ class Payment extends Model
      * @var array
      */
     protected $fillable = [
-        'date_from', 'date_to', 'amount', 'profit', 'hours', 
+        'date_from', 'date_to', 'amount', 'profit', 'hours',
         'status', 'description', 'customer_id'
     ];
-    
+
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'customer_id')->select(['id', 'name', 'email']);

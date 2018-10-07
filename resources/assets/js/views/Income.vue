@@ -2,8 +2,8 @@
   <b-container>
     <b-row>
       <b-col class="my-1">
-        <b-btn v-b-toggle.add_payment variant="success" 
-          @click="showAddNew = !showAddNew" 
+        <b-btn v-b-toggle.add_payment variant="success"
+          @click="showAddNew = !showAddNew"
           :aria-expanded="showAddNew ? 'true' : 'false'">Add New Payment</b-btn>
         <b-collapse id="add_payment" v-model="showAddNew" class="mt-2">
           <b-card>
@@ -11,7 +11,7 @@
           </b-card>
         </b-collapse>
       </b-col>
-    </b-row>      
+    </b-row>
     <b-row>
       <b-col md="4" class="my-1">
         <b-form-group horizontal label="Filter" class="mb-0">
@@ -43,7 +43,9 @@
              :sort-direction="sortDirection"
              @filtered="onFiltered"
     >
-      <template slot="date" slot-scope="row">{{row.date_from}}</template>
+      <template slot="amount" slot-scope="row">{{row.value}}</template>
+      <template slot="date" slot-scope="row">{{row.value}}</template>
+      <template slot="customer" slot-scope="row">{{row.value}}</template>
       <!-- <template slot="isActive" slot-scope="row">{{row.value?'Yes :)':'No :('}}</template> -->
       <template slot="actions" slot-scope="row">
         <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
@@ -53,10 +55,10 @@
         <b-button size="sm" @click.stop="row.toggleDetails">
           {{ row.detailsShowing ? 'Close' : 'Sprints' }}
         </b-button> -->
-        <b-button size="sm" @click.stop="confirmDelete(row.item, row.index, $event.target)" 
+        <b-button size="sm" @click.stop="confirmDelete(row.item, row.index, $event.target)"
           class="btn btn-danger">
           Delete
-        </b-button>        
+        </b-button>
       </template>
       <template slot="row-details" slot-scope="row">
         <b-card>
@@ -66,10 +68,10 @@
           <!-- <ul>
             <li v-for="(value, key) in row.item.sprints" :key="key">{{ key }}: {{ value }}</li>
           </ul>   -->
-          <active-sprints v-bind:sprints="row.item.sprints"></active-sprints>
-          
-          <add-project v-bind:user="row.item.id" 
-            @sprint_added="sprint => row.item.sprints.push(sprint)"></add-project>
+          <!-- <active-sprints v-bind:sprints="row.item.sprints"></active-sprints> -->
+
+          <!-- <add-project v-bind:user="row.item.id"
+            @sprint_added="sprint => row.item.sprints.push(sprint)"></add-project> -->
         </b-card>
       </template>
     </b-table>
@@ -89,17 +91,17 @@
         {{ modalInfo.content }}
       </div>
       <div slot="modal-footer" class="w-100">
-         <b-btn @click="handleDelete" 
-          size="sm" class="float-right 
+         <b-btn @click="handleDelete"
+          size="sm" class="float-right
           btn btn-danger mx-1">Delete</b-btn>
-         <b-btn size="sm" 
-          class="float-right" 
-          variant="primary" 
+         <b-btn size="sm"
+          class="float-right"
+          variant="primary"
           @click="hideDeleteModal">
            Close
          </b-btn>
-       </div>      
-    </b-modal>    
+       </div>
+    </b-modal>
 
   </b-container>
 </template>
@@ -108,7 +110,6 @@
 // import '../bootstrap';
 Vue.use(BootstrapVue);
 
-import ActiveSprints from '../components/ActiveSprints.vue';
 import Preloader from "../components/Preloader.vue";
 import AddPayment from '../components/AddPayment.vue';
 
@@ -116,19 +117,20 @@ export default {
     // props: {
     //     programmers: Array
     // },
-  components: { 
+  components: {
     'add-payment': AddPayment,
-    'active-sprints': ActiveSprints,
     "preloader": Preloader
   },
-    
+
   data () {
     return {
       showAddNew: false,
       items: [],
       showLoader: false,
       fields: [
-        { key: 'name', label: 'Name', sortable: true, sortDirection: 'desc' },
+        { key: 'amount', label: 'Amount', sortable: true },
+        { key: 'created_at', label: 'Date', sortable: true },
+        { key: 'customer.name', label: 'Customer', sortable: true },
         // { key: 'age', label: 'Person age', sortable: true, 'class': 'text-center' },
         // { key: 'isActive', label: 'is Active' },
         { key: 'actions', label: '' }
@@ -137,13 +139,13 @@ export default {
       perPage: 5,
       totalRows: 1,
       pageOptions: [ 5, 10, 15, 50 ],
-      sortBy: null,
-      sortDesc: false,
+      sortBy: 'created_at',
+      sortDesc: true,
       sortDirection: 'asc',
       filter: null,
       modalInfo: { title: '', content: '' },
-      
-          
+
+
     }
   },
   computed: {
@@ -153,7 +155,7 @@ export default {
         .filter(f => f.sortable)
         .map(f => { return { text: f.label, value: f.key } })
     }
-  },  
+  },
   methods: {
     // info (item, index, button) {
     //   this.modalInfo.title = `Row index: ${index}`
@@ -169,7 +171,7 @@ export default {
       this.totalRows = filteredItems.length
       this.currentPage = 1
     },
-    addPyment(payment) {
+    addPayment(payment) {
         this.items.push(payment);
         this.showAddNew = false;
     },
@@ -193,7 +195,7 @@ export default {
     },
     hideDeleteModal(){
       this.$root.$emit("bv::hide::modal", "deleteModal");
-    },    
+    },
   },
   created() {
       //make an ajax request to our server

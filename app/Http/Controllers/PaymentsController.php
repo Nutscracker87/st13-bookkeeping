@@ -16,6 +16,7 @@ class PaymentsController extends Controller
     public function index()
     {
         return Payment::with('customer')->get();
+        //return Payment::all();
     }
 
     /**
@@ -36,20 +37,29 @@ class PaymentsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'customer' => 'required',
+            'amount' => 'required',
+        ]);
 
-        // $this->validate($request, [
-        //     'customer' => 'required',
-        //     'name' => 'required',
-        //     'rate' => 'required|integer|min:0'
-        // ]);
+        $input = $request->all();
 
+        $dateFrom = $input['date_from']
+                ? \Carbon\Carbon::parse($input['date_from'])->tz('UTC'):
+                \Carbon\Carbon::now()->tz('UTC');
+        $dateTo = $input['date_to']
+                ? \Carbon\Carbon::parse($input['date_to'])->tz('UTC'):
+                \Carbon\Carbon::now()->tz('UTC');
 
-        // $input = $request->all();
+        $transaction = Customer::find($input['customer'])->payments()->create([
+            'amount' => $request->input('amount'),
+            'profit' => $request->input('amount'),
+            'date_from' => $dateFrom,
+            'date_to' => $dateTo,
+            'description' => $request->input('description', null),
+        ]);
 
-        // $dateStart = $input['started_at']
-        //         ? \Carbon\Carbon::parse($input['started_at'])->tz('UTC'):
-        //         \Carbon\Carbon::now()->tz('UTC');
-
+        return $transaction;
         // $project = Customer::find($input['customer'])->projects()->create([
         //     // 'user_id' => $request->input('user_id'),
         //     // 'project_id' => $request->input('project'),
@@ -63,7 +73,7 @@ class PaymentsController extends Controller
         //     'started_at' => $dateStart,
         //     'archive' => $request->input('archive', false),
         //     'archived_at' => $request->input('archived_at', null),
-            
+
         // ]);
 
         // return $project->load('owner');

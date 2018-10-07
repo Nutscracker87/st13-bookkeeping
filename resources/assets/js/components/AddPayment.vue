@@ -72,16 +72,10 @@ export default {
       form: new Form({
         //   'date_from', 'date_to', 'amount', 'profit', 'hours',
         // 'status', 'description', 'customer_id'
-        name: { value: "", default: "" },
-        started_at: { value: "", default: "" },
-        description: { value: "", default: "" },
+        amount: { value: "", default: "" },
+        date_from: { value: "", default: "" },
+        date_to: { value: "", default: "" },
         customer: { value: "", default: "" },
-        // project: {value: "this.project.id" , default: 'this.project.id'},
-        rate: { value: "", default: "" },
-        currency: { value: "$", default: "$" },
-        rate_type: { value: "hourly", default: "hourly" },
-        archived_at: { value: "", default: "" },
-        archive: { value: false, default: false },
       })
     };
   },
