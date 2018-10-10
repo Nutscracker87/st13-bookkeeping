@@ -1,7 +1,11 @@
 <template>
     <div class="container">
         <div class="row mt-1">
-            <div class="col-sm-12">
+            <div class="col-sm-12 my-3">
+                <p class="h2">Select Period (Default month)</p>
+                <rangedate-picker class="" @selected="setDateRange"></rangedate-picker>
+            </div>
+            <!-- <div class="col-sm-12">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-outline-info active">
                         <input type="radio" name="options" id="option1" autocomplete="off" checked>Month
@@ -13,14 +17,14 @@
                         <input type="radio" name="options" id="option3" autocomplete="off"> Year
                     </label>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
 
 <script>
 // import '../bootstrap';
-Vue.use(BootstrapVue);
+Vue.use(BootstrapVue, VueRangedatePicker);
 
 // import AddProject from "../components/AddProject.vue";
 // import ActiveSprints from "../components/ActiveSprints.vue";
@@ -33,13 +37,16 @@ export default {
   components: {
     // "add-project": AddProject,
     // "active-sprints": ActiveSprints,
-    preloader: Preloader
+    preloader: Preloader,
+    'rangedate-picker': VueRangedatePicker,
   },
 
   data() {
     return {
     //   showAddNew: false,
       items: [],
+      dateStart: false,
+      dateEnd: false,
       showLoader: false,
     //   fields: [
     //     { key: "name", label: "Name", sortable: true, sortDirection: "desc" },
@@ -105,6 +112,11 @@ export default {
     // hideDeleteModal() {
     //   this.$root.$emit("bv::hide::modal", "deleteModal");
     // }
+    setDateRange(dates){
+        console.log(dates);
+        this.dateStart=dates.start;
+        this.dateEnd=dates.end;
+    }
   },
   created() {
     //make an ajax request to our server

@@ -6,16 +6,18 @@ import VueRouter from "vue-router";
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import BootstrapVue from 'bootstrap-vue'
 import Vue from "vue";
+import VueRangedatePicker from 'vue-rangedate-picker';
 import axios from "axios";
 
 import Form from './untilites/Form';
 
 // Vue.use(VueRouter, BootstrapVue);
-Vue.use(VueRouter, BootstrapVue);
+Vue.use(VueRouter, BootstrapVue, VueRangedatePicker);
 
 window.axios = axios;
 window.Vue = Vue;
 window.BootstrapVue = BootstrapVue;
+window.VueRangedatePicker = VueRangedatePicker;
 window.Form = Form;
 
 
