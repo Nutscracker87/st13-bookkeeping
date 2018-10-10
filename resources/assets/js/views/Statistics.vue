@@ -1,16 +1,16 @@
 <template>
     <div class="container">
-        <div class="row">
+        <div class="row mt-1">
             <div class="col-sm-12">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-secondary active">
-                        <input type="radio" name="options" id="option1" autocomplete="off" checked> Active
+                    <label class="btn btn-outline-info active">
+                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Month
                     </label>
-                    <label class="btn btn-secondary">
-                        <input type="radio" name="options" id="option2" autocomplete="off"> Radio
+                    <label class="btn btn-outline-info">
+                        <input type="radio" name="options" id="option2" autocomplete="off"> 3 Monthes
                     </label>
-                    <label class="btn btn-secondary">
-                        <input type="radio" name="options" id="option3" autocomplete="off"> Radio
+                    <label class="btn btn-outline-info">
+                        <input type="radio" name="options" id="option3" autocomplete="off"> Year
                     </label>
                 </div>
             </div>

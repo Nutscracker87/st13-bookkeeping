@@ -20,7 +20,11 @@ let routes = [
     {
         path: '/income',
         component: require('./views/Income')
-    },         
+    },
+    {
+        path: '/statistics',
+        component: require('./views/Statistics')
+    },
 ];
 
 export default new VueRouter({
