@@ -6,20 +6,22 @@ import VueRouter from "vue-router";
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import BootstrapVue from 'bootstrap-vue'
 import Vue from "vue";
-import VueRangedatePicker from 'vue-rangedate-picker';
-import axios from "axios";
+import VueRangedatePickerWinslow from 'vue-rangedate-picker-winslow'
 
+
+import axios from "axios";
+import moment from 'moment'
 import Form from './untilites/Form';
 
 // Vue.use(VueRouter, BootstrapVue);
-Vue.use(VueRouter, BootstrapVue, VueRangedatePicker);
+Vue.use(VueRouter, BootstrapVue, VueRangedatePickerWinslow);
 
 window.axios = axios;
+window.moment = moment;
 window.Vue = Vue;
 window.BootstrapVue = BootstrapVue;
-window.VueRangedatePicker = VueRangedatePicker;
+window.VueRangedatePickerWinslow = VueRangedatePickerWinslow;
 window.Form = Form;
-
 
 
 /**

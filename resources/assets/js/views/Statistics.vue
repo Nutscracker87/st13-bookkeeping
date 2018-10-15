@@ -3,7 +3,7 @@
         <div class="row mt-1">
             <div class="col-sm-12 my-3">
                 <p class="h2">Select Period (Default month)</p>
-                <rangedate-picker class="" @selected="setDateRange"></rangedate-picker>
+                <rangedate-picker class="" @selected="setDateRange" i18n="EN" v-bind:initRange="initRange"></rangedate-picker>
             </div>
             <!-- <div class="col-sm-12">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -24,7 +24,7 @@
 
 <script>
 // import '../bootstrap';
-Vue.use(BootstrapVue, VueRangedatePicker);
+Vue.use(BootstrapVue, VueRangedatePickerWinslow, moment);
 
 // import AddProject from "../components/AddProject.vue";
 // import ActiveSprints from "../components/ActiveSprints.vue";
@@ -38,39 +38,61 @@ export default {
     // "add-project": AddProject,
     // "active-sprints": ActiveSprints,
     preloader: Preloader,
-    'rangedate-picker': VueRangedatePicker,
+    "rangedate-picker": VueRangedatePickerWinslow
   },
 
   data() {
     return {
-    //   showAddNew: false,
+      //   showAddNew: false,
       items: [],
       dateStart: false,
       dateEnd: false,
       showLoader: false,
-    //   fields: [
-    //     { key: "name", label: "Name", sortable: true, sortDirection: "desc" },
-    //     // { key: 'age', label: 'Person age', sortable: true, 'class': 'text-center' },
-    //     // { key: 'isActive', label: 'is Active' },
-    //     { key: "actions", label: "" }
-    //   ],
-    //   currentPage: 1,
-    //   perPage: 5,
-    //   totalRows: 1,
-    //   pageOptions: [5, 10, 15, 50],
-    //   sortBy: null,
-    //   sortDesc: false,
-    //   sortDirection: "asc",
-    //   filter: null,
-    //   modalInfo: { title: "", content: "" }
+      startDate: "2017-09-05",
+      endDate: "2017-09-15",
+      initRange: {
+        start: moment()
+          .startOf("week")
+          .add(2, "days")._d,
+        end: moment()
+          .startOf("week")
+          .add(8, "days")._d
+        // 'start': new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 5, 0, 0),
+        // 'end': new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1, 0, 0)
+      }
+      // initRange: {
+      // type: Object,
+      // default: () => {
+      //     const n = new Date();
+      //     return {
+      //         start: new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 0, 0),
+      //         end: new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 23, 59)
+      //     }
+      //   }
+      // }
+      //   fields: [
+      //     { key: "name", label: "Name", sortable: true, sortDirection: "desc" },
+      //     // { key: 'age', label: 'Person age', sortable: true, 'class': 'text-center' },
+      //     // { key: 'isActive', label: 'is Active' },
+      //     { key: "actions", label: "" }
+      //   ],
+      //   currentPage: 1,
+      //   perPage: 5,
+      //   totalRows: 1,
+      //   pageOptions: [5, 10, 15, 50],
+      //   sortBy: null,
+      //   sortDesc: false,
+      //   sortDirection: "asc",
+      //   filter: null,
+      //   modalInfo: { title: "", content: "" }
     };
   },
   computed: {
     sortOptions() {
       // Create an options list from our fields
-    //   return this.fields.filter(f => f.sortable).map(f => {
-    //     return { text: f.label, value: f.key };
-    //   });
+      //   return this.fields.filter(f => f.sortable).map(f => {
+      //     return { text: f.label, value: f.key };
+      //   });
     }
   },
   methods: {
@@ -112,10 +134,24 @@ export default {
     // hideDeleteModal() {
     //   this.$root.$emit("bv::hide::modal", "deleteModal");
     // }
-    setDateRange(dates){
-        console.log(dates);
-        this.dateStart=dates.start;
-        this.dateEnd=dates.end;
+    setDateRange(dates) {
+      console.log(dates);
+      this.dateStart = dates.start;
+      this.dateEnd = dates.end;
+    },
+
+    // initialRange(){
+    //     const n = new Date();
+    //     const start = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 5);
+    //     const end = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1);
+    //     return {
+    //         start: start,
+    //         end: end
+    //     }
+    // },
+
+    moment: function() {
+      return moment();
     }
   },
   created() {
