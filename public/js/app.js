@@ -89621,6 +89621,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 // import '../bootstrap';
 Vue.use(BootstrapVue, VueRangedatePickerWinslow, moment);
@@ -89647,40 +89652,78 @@ Vue.use(BootstrapVue, VueRangedatePickerWinslow, moment);
       dateStart: false,
       dateEnd: false,
       showLoader: false,
-      startDate: "2017-09-05",
-      endDate: "2017-09-15",
+      // startDate: "2017-09-05",
+      // endDate: "2017-09-15",
       initRange: {
-        start: moment().startOf("week").add(2, "days")._d,
-        end: moment().startOf("week").add(8, "days")._d
+        start: moment().subtract(1, 'months').add(1, 'day').toDate(),
+        end: moment().add(1, 'day').toDate()
         // 'start': new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 5, 0, 0),
         // 'end': new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1, 0, 0)
-
-        // initRange: {
-        // type: Object,
-        // default: () => {
-        //     const n = new Date();
+      },
+      presetRanges: {
+        thisMonth: function thisMonth() {
+          return {
+            label: 'This Month',
+            active: false,
+            dateRange: {
+              start: moment().startOf('month').add(1, 'day').toDate(),
+              end: moment().add(1, 'day').toDate()
+            }
+          };
+        },
+        lastMonth: function lastMonth() {
+          return {
+            label: 'Last Month',
+            active: false,
+            dateRange: {
+              start: moment().subtract(1, 'months').startOf('month').add(1, 'day').toDate(),
+              end: moment().subtract(1, 'months').endOf('month').add(1, 'day').toDate()
+            }
+          };
+        },
+        last3Month: function last3Month() {
+          return {
+            label: 'Last 3 Month',
+            active: false,
+            dateRange: {
+              start: moment().subtract(3, 'months').startOf('month').add(1, 'day').toDate(),
+              end: moment().subtract(1, 'months').endOf('month').add(1, 'day').toDate()
+            }
+          };
+        },
+        lastHalfYear: function lastHalfYear() {
+          return {
+            label: 'Last 6 Monthes',
+            active: false,
+            dateRange: {
+              start: moment().subtract(6, 'months').startOf('month').add(1, 'day').toDate(),
+              end: moment().subtract(1, 'months').endOf('month').add(1, 'day').toDate()
+            }
+          };
+        },
+        lastYear: function lastYear() {
+          return {
+            label: 'Last Year',
+            active: false,
+            dateRange: {
+              start: moment().subtract(12, 'months').startOf('month').add(1, 'day').toDate(),
+              end: moment().subtract(1, 'months').endOf('month').add(1, 'day').toDate()
+            }
+          };
+        }
+        // last3MonthesWithCurrent: function () {
         //     return {
-        //         start: new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 0, 0),
-        //         end: new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 23, 59)
+        //       label: 'Last 3 Monthes Include Current',
+        //       active: false,
+        //       dateRange: {
+        //         start: moment().subtract(1, 'months').add(1,'day').toDate(),
+        //         end: moment().add(1,'day').toDate()
+        //       }
         //     }
-        //   }
-        // }
-        //   fields: [
-        //     { key: "name", label: "Name", sortable: true, sortDirection: "desc" },
-        //     // { key: 'age', label: 'Person age', sortable: true, 'class': 'text-center' },
-        //     // { key: 'isActive', label: 'is Active' },
-        //     { key: "actions", label: "" }
-        //   ],
-        //   currentPage: 1,
-        //   perPage: 5,
-        //   totalRows: 1,
-        //   pageOptions: [5, 10, 15, 50],
-        //   sortBy: null,
-        //   sortDesc: false,
-        //   sortDirection: "asc",
-        //   filter: null,
-        //   modalInfo: { title: "", content: "" }
-      } };
+        //   },
+      }
+
+    };
   },
 
   computed: {
@@ -89796,7 +89839,11 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("rangedate-picker", {
-            attrs: { i18n: "EN", initRange: _vm.initRange },
+            attrs: {
+              i18n: "EN",
+              initRange: _vm.initRange,
+              presetRanges: _vm.presetRanges
+            },
             on: { selected: _vm.setDateRange }
           })
         ],

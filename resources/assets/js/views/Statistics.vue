@@ -3,7 +3,12 @@
         <div class="row mt-1">
             <div class="col-sm-12 my-3">
                 <p class="h2">Select Period (Default month)</p>
-                <rangedate-picker class="" @selected="setDateRange" i18n="EN" v-bind:initRange="initRange"></rangedate-picker>
+                <rangedate-picker class=""
+                  @selected="setDateRange"
+                  i18n="EN"
+                  v-bind:initRange="initRange"
+                  :presetRanges="presetRanges"
+                  ></rangedate-picker>
             </div>
             <!-- <div class="col-sm-12">
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -48,43 +53,78 @@ export default {
       dateStart: false,
       dateEnd: false,
       showLoader: false,
-      startDate: "2017-09-05",
-      endDate: "2017-09-15",
+      // startDate: "2017-09-05",
+      // endDate: "2017-09-15",
       initRange: {
         start: moment()
-          .startOf("week")
-          .add(2, "days")._d,
-        end: moment()
-          .startOf("week")
-          .add(8, "days")._d
+         .subtract(1, 'months').add(1,'day').toDate(),
+        end: moment().add(1,'day').toDate()
         // 'start': new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() - 5, 0, 0),
         // 'end': new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1, 0, 0)
+      },
+      presetRanges: {
+        thisMonth: function () {
+            return {
+              label: 'This Month',
+              active: false,
+              dateRange: {
+                start: moment().startOf('month').add(1,'day').toDate(),
+                end: moment().add(1,'day').toDate()
+              }
+            }
+          },
+        lastMonth: function () {
+            return {
+              label: 'Last Month',
+              active: false,
+              dateRange: {
+                start: moment().subtract(1, 'months').startOf('month').add(1,'day').toDate(),
+                end: moment().subtract(1, 'months').endOf('month').add(1,'day').toDate(),
+              }
+            }
+        },
+        last3Month: function () {
+            return {
+              label: 'Last 3 Month',
+              active: false,
+              dateRange: {
+                start: moment().subtract(3, 'months').startOf('month').add(1,'day').toDate(),
+                end: moment().subtract(1, 'months').endOf('month').add(1,'day').toDate(),
+              }
+            }
+          },
+        lastHalfYear: function () {
+            return {
+              label: 'Last 6 Monthes',
+              active: false,
+              dateRange: {
+                start: moment().subtract(6, 'months').startOf('month').add(1,'day').toDate(),
+                end: moment().subtract(1, 'months').endOf('month').add(1,'day').toDate(),
+              }
+            }
+          },
+        lastYear: function () {
+            return {
+              label: 'Last Year',
+              active: false,
+              dateRange: {
+                start: moment().subtract(12, 'months').startOf('month').add(1,'day').toDate(),
+                end: moment().subtract(1, 'months').endOf('month').add(1,'day').toDate(),
+              }
+            }
+          },
+        // last3MonthesWithCurrent: function () {
+        //     return {
+        //       label: 'Last 3 Monthes Include Current',
+        //       active: false,
+        //       dateRange: {
+        //         start: moment().subtract(1, 'months').add(1,'day').toDate(),
+        //         end: moment().add(1,'day').toDate()
+        //       }
+        //     }
+        //   },
       }
-      // initRange: {
-      // type: Object,
-      // default: () => {
-      //     const n = new Date();
-      //     return {
-      //         start: new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 0, 0),
-      //         end: new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 23, 59)
-      //     }
-      //   }
-      // }
-      //   fields: [
-      //     { key: "name", label: "Name", sortable: true, sortDirection: "desc" },
-      //     // { key: 'age', label: 'Person age', sortable: true, 'class': 'text-center' },
-      //     // { key: 'isActive', label: 'is Active' },
-      //     { key: "actions", label: "" }
-      //   ],
-      //   currentPage: 1,
-      //   perPage: 5,
-      //   totalRows: 1,
-      //   pageOptions: [5, 10, 15, 50],
-      //   sortBy: null,
-      //   sortDesc: false,
-      //   sortDirection: "asc",
-      //   filter: null,
-      //   modalInfo: { title: "", content: "" }
+
     };
   },
   computed: {
