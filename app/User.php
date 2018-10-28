@@ -37,5 +37,10 @@ class User extends Authenticatable
     public function sprints()
     {
         return $this->hasMany(Sprint::class);
-    }    
+    }
+
+    public function payedSprints()
+    {
+        return $this->hasMany(Sprint::class)->where('sprints.payment_status', 2);
+    }
 }

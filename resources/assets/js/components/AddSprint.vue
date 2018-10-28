@@ -1,31 +1,31 @@
 <template>
   <div class="sprint">
     <h4 class="card-title">Create Sprint</h4>
-    <form method="POST" action="/sprints" 
+    <form method="POST" action="/sprints"
       @submit.prevent="onSubmit"
       @keydown="form.errors.clear($event.target.name)"
       @change="form.errors.clear($event.target.name)">
       <div class="form-row">
         <div class="form-group col-md-4">
           <label for="sprint-project">Project</label>
-          <select 
-              v-bind:class="['form-control', form.errors.has('project') ? 'is-invalid' : '']"  
-              id="sprint-project" 
-              name="project" 
-              @change="setSprintRate($event.target.value)" 
+          <select
+              v-bind:class="['form-control', form.errors.has('project') ? 'is-invalid' : '']"
+              id="sprint-project"
+              name="project"
+              @change="setSprintRate($event.target.value)"
               v-model="form.project">
-              <option v-for="project in projects" 
+              <option v-for="project in projects"
                   :key="project.id" v-bind:value="project.id">
                   {{ project.name }}
               </option>
           </select>
-          <div class="invalid-feedback" v-if="form.errors.has('project')" 
-               v-text="form.errors.get('project')"></div>                                                
+          <div class="invalid-feedback" v-if="form.errors.has('project')"
+               v-text="form.errors.get('project')"></div>
         </div>
         <div class="form-group col-md-2">
           <label for="sprint-rate">Rate</label>
-          <input type="number" 
-            v-bind:class="['form-control', form.errors.has('rate') ? 'is-invalid' : '']" 
+          <input type="number"
+            v-bind:class="['form-control', form.errors.has('rate') ? 'is-invalid' : '']"
             id="sprint-rate" name="rate" v-model="form.rate">
           <div class="invalid-feedback" v-if="form.errors.has('rate')" v-text="form.errors.get('rate')"></div>
         </div>
@@ -51,7 +51,7 @@
         </div>
         <div class="form-group col-md-2">
           <label for="sprint-worked-time">Time Worked</label>
-          <input type="number" class="form-control" id="worked-time" name="time_worked" v-model="form.time_worked">
+          <input type="number" min="0" class="form-control" id="worked-time" name="worked_time" v-model="form.worked_time">
         </div>
         <div class="form-group col-md-3">
           <label for="sprint-closed-date">Close</label>
@@ -96,7 +96,7 @@ export default {
         currency: { value: "$", default: "$" },
         rate_type: { value: "hourly", default: "hourly" },
         started_at: { value: "", default: "" },
-        time_worked: { value: "", default: "" },
+        worked_time: { value: "0", default: "0" },
         closed: { value: false, default: false },
         closed_date: { value: "", default: "" },
         payment_status: { value: "1", default: "1" }
@@ -127,7 +127,7 @@ export default {
       this.form.currency = this.projects.length > 0 ? this.projects[0].currency : '';
       this.form.rate_type = this.projects.length > 0 ? this.projects[0].rate_type : '';
     });
-  }  
+  }
 };
 </script>
 

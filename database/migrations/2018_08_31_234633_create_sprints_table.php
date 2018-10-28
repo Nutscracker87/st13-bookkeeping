@@ -17,7 +17,7 @@ class CreateSprintsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->index();
             $table->integer('project_id')->index();
-            $table->integer('worked_time');
+            $table->integer('worked_time')->nullable();
             $table->integer('rate')->nullable();
             // $table->integer('rate_type')->nullable();
             $table->enum('rate_type', ['hourly', 'fixed'])->nullable();

@@ -39,7 +39,7 @@ class SprintsController extends Controller
         $dateStart = $input['started_at']
                 ? \Carbon\Carbon::parse($input['started_at'])->tz('UTC')->format('Y-m-d H:i:s') :
                 \Carbon\Carbon::now()->tz('UTC')->format('Y-m-d H:i:s');
-
+                // dd($sprint->worked_time);
         $sprint = User::find($input['user_id'])->sprints()->create([
             // 'user_id' => $request->input('user_id'),
             'project_id' => $request->input('project'),
@@ -51,7 +51,7 @@ class SprintsController extends Controller
             'notes' => $request->input('notes', null),
             'started_at' => $dateStart,
             'closed_at' => $request->input('closed_at', null),
-            
+
         ]);
 
         return $sprint->load('user', 'project','project.owner');
@@ -100,13 +100,13 @@ class SprintsController extends Controller
         $dateClose = $input['closed_date']
                 ? \Carbon\Carbon::parse($input['closed_date'])->tz('UTC')->format('Y-m-d H:i:s'):
                 \Carbon\Carbon::now()->tz('UTC')->format('Y-m-d H:i:s');
-        
+
         $sprint = Sprint::findOrFail($input['sprint_id']);
 
         $dateStart = $input['started_at']
             ? \Carbon\Carbon::parse($input['started_at'])->tz('UTC')->format('Y-m-d H:i:s') :
-            $sprint->started_at;        
-        
+            $sprint->started_at;
+
         $sprint->rate = $request->input('rate');
         $sprint->currency = $request->input('currency');
         $sprint->rate_type = $request->input('rate_type', 'hourly');
@@ -114,7 +114,7 @@ class SprintsController extends Controller
         $sprint->payment_status =  $request->input('payment_status', false);
         $sprint->notes = $request->input('notes', null);
         $sprint->closed_at = $dateClose;
-        
+                //  dd($sprint->worked_time);
         $sprint->save();
 
         return $sprint->load('user', 'project','project.owner');

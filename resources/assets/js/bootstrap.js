@@ -11,7 +11,7 @@ import VueRangedatePickerWinslow from 'vue-rangedate-picker-winslow'
 
 import axios from "axios";
 import moment from 'moment'
-import Form from './untilites/Form';
+import Form from './utilites/Form';
 
 // Vue.use(VueRouter, BootstrapVue);
 Vue.use(VueRouter, BootstrapVue, VueRangedatePickerWinslow);

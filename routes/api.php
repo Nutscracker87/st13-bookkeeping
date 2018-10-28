@@ -41,3 +41,5 @@ Route::delete('/projects/{id}', 'ProjectsController@destroy');
 
 Route::get('/payments', 'PaymentsController@index');
 Route::post('/payments', 'PaymentsController@store');
+
+Route::post('/statistics', 'StatisticsController@show');

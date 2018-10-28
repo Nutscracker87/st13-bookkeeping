@@ -35,13 +35,13 @@
             <div class="form-row">
                 <div class="form-group col-md-2">
                     <label for="sprint-started">Started At</label>
-                    <input type="date" class="form-control" 
-                        id="sprint-started" name="started_at" 
+                    <input type="date" class="form-control"
+                        id="sprint-started" name="started_at"
                         v-model="form.started_at">
                 </div>
                 <div class="form-group col-md-2">
                     <label for="sprint-worked-time">Time Worked</label>
-                    <input type="number" class="form-control" id="worked-time" name="time_worked" v-model="form.time_worked">
+                    <input type="number" class="form-control" id="worked-time" name="worked_time" v-model="form.worked_time">
                 </div>
                 <div class="form-group col-md-3">
                     <label for="sprint-closed-date">Close</label>
@@ -96,8 +96,8 @@ export default {
           default: this.sprint.rate_type
         },
         started_at: { value: moment(this.sprint.started_at).format('YYYY-MM-DD'), default: "" },
-        time_worked: {
-          value: this.sprint.time_worked ? this.sprint.time_worked : 0,
+        worked_time: {
+          value: this.sprint.worked_time ? this.sprint.worked_time : 0,
           default: ""
         },
         closed: { value: true, default: true },
