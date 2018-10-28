@@ -2,6 +2,16 @@
   <b-container>
     <!-- User Interface controls -->
     <b-row>
+      <b-col class="my-1">
+        <b-btn v-b-toggle.add_worker variant="success" @click="showAddNew = !showAddNew" :aria-expanded="showAddNew ? 'true' : 'false'">Add Worker</b-btn>
+        <b-collapse id="add_worker" v-model="showAddNew" class="mt-2">
+          <b-card>
+            <add-worker @worker_added="addWorker"></add-worker>
+          </b-card>
+        </b-collapse>
+      </b-col>
+    </b-row>
+    <b-row>
       <b-col md="4" class="my-1">
         <b-form-group horizontal label="Filter" class="mb-0">
           <b-input-group>
@@ -51,20 +61,20 @@
           <!-- <ul>
             <li v-for="(value, key) in row.item.sprints" :key="key">{{ key }}: {{ value }}</li>
           </ul>   -->
-          <active-sprints 
-            v-bind:sprints="row.item.active_sprints" 
-            @confirm_delete_sprint="event => confirmDeleteSprint(event)" 
+          <active-sprints
+            v-bind:sprints="row.item.active_sprints"
+            @confirm_delete_sprint="event => confirmDeleteSprint(event)"
             @finish_sprint_confirmation="sprint => setFinishSprintMode(sprint)"
             ></active-sprints>
-          
-          <add-sprint v-bind:user="row.item.id" 
+
+          <add-sprint v-bind:user="row.item.id"
             v-if="!row.item.active_sprints.includes(finishSprint.data)"
             @sprint_added="sprint => row.item.active_sprints.push(sprint)"></add-sprint>
-          <finish-sprint 
-            v-else 
-            v-bind:sprint="finishSprint.data" 
+          <finish-sprint
+            v-else
+            v-bind:sprint="finishSprint.data"
             @cancel_finish_sprint="() => {finishSprint = {id: false, data: false}}"
-            @sprint_finished="sprint => sprintFinished(sprint)"></finish-sprint>            
+            @sprint_finished="sprint => sprintFinished(sprint)"></finish-sprint>
         </b-card>
       </template>
     </b-table>
@@ -84,17 +94,17 @@
         {{ modalInfo.content }}
         </div>
         <div slot="modal-footer" class="w-100">
-            <b-btn @click="handleDeleteSprint" 
-            size="sm" class="float-right 
+            <b-btn @click="handleDeleteSprint"
+            size="sm" class="float-right
             btn btn-danger mx-1">Delete</b-btn>
-            <b-btn size="sm" 
-            class="float-right" 
-            variant="primary" 
+            <b-btn size="sm"
+            class="float-right"
+            variant="primary"
             @click="hideDeleteModal">
             Close
             </b-btn>
-        </div>      
-    </b-modal>  
+        </div>
+    </b-modal>
   </b-container>
 </template>
 
@@ -104,16 +114,19 @@ Vue.use(BootstrapVue);
 import AddSprint from '../components/AddSprint.vue';
 import ActiveSprints from '../components/ActiveSprints.vue';
 import FinishSprint from '../components/FinishSprint';
+import AddWorker from "../components/AddWorker.vue";
 
 export default {
-  components: { 
+  components: {
     'add-sprint': AddSprint,
     'active-sprints': ActiveSprints,
     'finish-sprint': FinishSprint,
+    'add-worker': AddWorker
   },
-    
+
   data () {
     return {
+      showAddNew: false,
       items: [],
       fields: [
         { key: 'name', label: 'Name', sortable: true, sortDirection: 'desc' },
@@ -131,7 +144,7 @@ export default {
       filter: null,
       modalInfo: { title: '', content: '' },
       finishSprint: { id: false, data: false},
-          
+
     }
   },
   computed: {
@@ -141,7 +154,7 @@ export default {
         .filter(f => f.sortable)
         .map(f => { return { text: f.label, value: f.key } })
     }
-  },  
+  },
   methods: {
     info (item, index, button) {
       this.modalInfo.title = `Row index: ${index}`
@@ -189,6 +202,10 @@ export default {
       let itemKey = this.items.findIndex(e => e.id == sprint.user.id);
       this.items[itemKey].active_sprints = this.items[itemKey].active_sprints.filter(e => e.id !== sprint.id);
       this.resetSprintFinish();
+    },
+    addWorker(worker) {
+      this.items.push(worker);
+      this.showAddNew = false;
     }
   },
   created() {
@@ -198,7 +215,7 @@ export default {
             this.items = data;
             this.totalRows = data.length
           });
-  }  
+  }
 }
 </script>
 

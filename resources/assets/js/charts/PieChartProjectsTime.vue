@@ -40,7 +40,7 @@ export default {
             : [
               {
                 name: "No Projects",
-                y: 100,
+                y: 0,
                 drilldown: "No Projects"
               }
             ];
