@@ -100,16 +100,22 @@ class StatisticsController extends Controller
             $totalIncome += $payment->amount;
         }
 
-        $sprints = Sprint::where('sprints.payment_status', 2)
-                ->whereBetween('sprints.closed_at', [$start, $end])
-                ->get();
-
         $timeWorked = [];
 
         $totalExpense = 0;
         $totalTime = 0;
-        foreach($sprints as $sprint) {
-            $totalExpense += $sprint->worked_time * $sprint->rate;
+        $sprintsForPerios = Sprint::where('sprints.payment_status', 2)
+                ->whereBetween('sprints.closed_at', [$start, $end])
+                ->orWhere('sprints.closed_at', null)
+                ->orWhere(function ($query) use($start,$end) {
+                    $query->where('sprints.created_at', '<=', $end)
+                          ->where('sprints.closed_at', '>=', $end);
+                })
+                ->get();
+
+        foreach($sprintsForPerios as $sprint) {
+            $totalExpense += $sprint->payment_status == 2 ?
+                $sprint->worked_time * $sprint->rate : 0;
 
             if(!isset($timeWorked[$sprint->project->name])) {
                 $timeWorked[$sprint->project->name]['time'] = 0;
