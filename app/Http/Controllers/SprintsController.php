@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Sprint;
 use App\User;
+use App\ExchangeRate;
+use App\Currency;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -40,6 +42,53 @@ class SprintsController extends Controller
                 ? \Carbon\Carbon::parse($input['started_at'])->tz('UTC')->format('Y-m-d H:i:s') :
                 \Carbon\Carbon::now()->tz('UTC')->format('Y-m-d H:i:s');
                 // dd($sprint->worked_time);
+
+        $dateClose = $input['closed_date']
+                ? \Carbon\Carbon::parse($input['closed_date'])->tz('UTC')->format('Y-m-d H:i:s'):
+                null;
+
+        if($request->input('payment_status') == 2) {
+            $paymentDate = $dateClose ? \Carbon\Carbon::parse($input['closed_date'])->tz('UTC')
+                : \Carbon\Carbon::now()->tz('UTC');
+            $currency = Currency::find($request->input('currency'));
+            //dd($paymentDate->toDateString());
+            if($currency->name !== 'USD') {
+                $exchangeRate = ExchangeRate::where('fsym',$currency->name)
+                    ->whereDate('created_at', '=', $paymentDate->toDateString())
+                    ->get()
+                    ->first();
+                //dd($exchangeRate->toArray());
+                if(!$exchangeRate) {
+                    $guzzleClient = new \GuzzleHttp\Client();
+                    $currencies = Currency::where('name', '<>', 'USD')->get();
+                    $minApiCryptocompare = 'https://min-api.cryptocompare.com/data/histoday?fsym={{fsym}}&tsym=USD&limit=1';
+                    foreach ($currencies as $currency) {
+                        $fsym = $currency->name;
+                        $apiUrl = str_replace('{{fsym}}', $fsym, $minApiCryptocompare).'&toTs='.$paymentDate->timestamp;
+                        //dd($apiUrl);
+                        $responseBody = $guzzleClient
+                            ->request('GET', $apiUrl)
+                            ->getBody();
+                        $res = json_decode($responseBody, true);
+                        if($res['Data'] && $res['Data'][0]) {
+                            $exchangeRate = new ExchangeRate;
+                            $exchangeRate->fsym = $fsym;
+                            $exchangeRate->tsym = 'USD';
+                            $exchangeRate->rate = $res['Data'][0]['close'];
+                            $exchangeRate->created_at = $paymentDate->format('Y-m-d H:i:s');
+                            $exchangeRate->save();
+                        }
+                        //dd($res);
+                        // $res = $res['coins'];
+                        //$data = [];
+                    }
+                }
+            }
+
+            // $table->string('fsym')->nullable();
+            // $table->string('tsym')->default('USD');
+        }
+
         $sprint = User::find($input['user_id'])->sprints()->create([
             // 'user_id' => $request->input('user_id'),
             'project_id' => $request->input('project'),
@@ -50,7 +99,7 @@ class SprintsController extends Controller
             'payment_status' => $request->input('payment_status', null),
             'notes' => $request->input('notes', null),
             'started_at' => $dateStart,
-            'closed_at' => $request->input('closed_at', null),
+            'closed_at' => $dateClose,
 
         ]);
 

@@ -18,6 +18,7 @@ class CreateExchangeRatesTable extends Migration
             $table->increments('id');
             $table->string('fsym')->nullable();
             $table->string('tsym')->default('USD');
+            $table->double('rate');
             $table->timestamps();
         });
     }
