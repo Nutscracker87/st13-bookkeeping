@@ -223,9 +223,9 @@ export default {
       this.form
         .post("/api/statistics")
         .then(statistics => {
-          this.expense = statistics.expense;
-          this.income = statistics.income;
-          this.balance = statistics.balance;
+          this.expense = parseFloat(statistics.expense);
+          this.income = parseFloat (statistics.income);
+          this.balance = parseFloat (statistics.balance);
           this.projects = statistics.projects;
         })
         .catch(errors => console.log(errors));

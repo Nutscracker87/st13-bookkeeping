@@ -8,6 +8,8 @@ use App\Customer;
 use Carbon\Carbon;
 use App\User;
 use App\Sprint;
+use App\ExchangeRate;
+use App\Currency;
 
 class StatisticsController extends Controller
 {
@@ -111,11 +113,34 @@ class StatisticsController extends Controller
                     $query->where('sprints.created_at', '<=', $end)
                           ->where('sprints.closed_at', '>=', $end);
                 })
+                ->with('currency')
                 ->get();
 
+        $totalExpense = 0;
         foreach($sprintsForPerios as $sprint) {
-            $totalExpense += $sprint->payment_status == 2 ?
-                $sprint->worked_time * $sprint->rate : 0;
+            if( $sprint->payment_status == 2) {
+                $paymentDate = $sprint->closed_at ?
+                    \Carbon\Carbon::parse($sprint->closed_at)->tz('UTC')
+                    : \Carbon\Carbon::parse($sprint->updated_at)->tz('UTC');
+
+                //$currency = Currency::find($sprint->input('currency'));
+                //dd($paymentDate->toDateString());
+                $rateCoefficient = 1;
+                if($sprint->currency->name !== 'USD') {
+                    $exchangeRate = ExchangeRate::where('fsym',$sprint->currency->name)
+                        ->whereDate('created_at', '=', $paymentDate->toDateString())
+                        ->get()
+                        ->first();
+                    if(!$exchangeRate) {
+                        $exchangeRate = ExchangeRate::where('fsym',$sprint->currency->name)
+                            ->latest('id')->first();
+                    }
+
+                    $rateCoefficient =  $exchangeRate->rate;
+                }
+
+                $totalExpense += $sprint->worked_time * $sprint->rate * $rateCoefficient;
+            }
 
             if(!isset($timeWorked[$sprint->project->name])) {
                 $timeWorked[$sprint->project->name]['time'] = 0;
@@ -138,10 +163,13 @@ class StatisticsController extends Controller
 
         // [$totalIncome, $totalExpence];
         //return false;
+        $balance = number_format(($totalIncome-$totalExpense), 2);
+        $totalExpense = number_format($totalExpense,2);
+        $totalIncome = number_format($totalIncome, 2);
         return [
             'income' => $totalIncome,
             'expense' => $totalExpense,
-            'balance' => ($totalIncome-$totalExpense),
+            'balance' => $balance,
             'projects' => $projects
         ];
     }

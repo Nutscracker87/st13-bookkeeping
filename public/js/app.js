@@ -90353,9 +90353,9 @@ Vue.use(BootstrapVue, VueRangedatePickerWinslow, moment);
       //   })
       //   .then(() => (this.showLoader = false));
       this.form.post("/api/statistics").then(function (statistics) {
-        _this.expense = statistics.expense;
-        _this.income = statistics.income;
-        _this.balance = statistics.balance;
+        _this.expense = parseFloat(statistics.expense);
+        _this.income = parseFloat(statistics.income);
+        _this.balance = parseFloat(statistics.balance);
         _this.projects = statistics.projects;
       }).catch(function (errors) {
         return console.log(errors);
