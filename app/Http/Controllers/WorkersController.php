@@ -44,7 +44,8 @@ class WorkersController extends Controller
         return User::select(['id', 'name'])
                     ->with('activeSprints', 'activeSprints.project', 'activeSprints.project.owner')
                     ->where('id', $worker->id)
-                    ->get();
+                    ->get()
+                    ->first();
 
     }
 
