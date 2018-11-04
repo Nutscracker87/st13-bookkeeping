@@ -21,7 +21,7 @@ class CreateSprintsTable extends Migration
             $table->integer('rate')->nullable();
             // $table->integer('rate_type')->nullable();
             $table->enum('rate_type', ['hourly', 'fixed'])->nullable();
-            $table->enum('currency', ['$', '₴'])->nullable();
+            $table->integer('currency_id')->nullable();
             $table->integer('payment_status')->nullable();
             $table->text('notes')->nullable();
             $table->dateTime('started_at')->nullable()->index();

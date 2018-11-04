@@ -41,8 +41,8 @@
                         <div class="form-group col-md-2">
                             <label for="sprint-payment-currency">Currency</label>
                             <select class="form-control" id="sprint-payment-currency" name="currency" v-model="form.currency">
-                                <option value="$" selected>$</option>
-                                <option value="₴">грн</option>
+                                <option value="1" selected>$</option>
+                                <option value="3">грн</option>
                             </select>
                         </div>
                         <div class="form-group col-md-2">
@@ -107,7 +107,7 @@ export default {
         customer: { value: "", default: "" },
         // project: {value: "this.project.id" , default: 'this.project.id'},
         rate: { value: "", default: "" },
-        currency: { value: "$", default: "$" },
+        currency: { value: "1", default: "1" },
         rate_type: { value: "hourly", default: "hourly" },
         archived_at: { value: "", default: "" },
         archive: { value: false, default: false },

@@ -16,7 +16,7 @@ class SprintsController extends Controller
      */
     public function index()
     {
-        return Sprint::whereNull('closed_at')->with('project')->get();
+        return Sprint::whereNull('closed_at')->with('project', 'currency')->get();
     }
 
     /**
@@ -44,7 +44,7 @@ class SprintsController extends Controller
             // 'user_id' => $request->input('user_id'),
             'project_id' => $request->input('project'),
             'rate' => $request->input('rate'),
-            'currency' => $request->input('currency'),
+            'currency_id' => $request->input('currency'),
             'rate_type' => $request->input('rate_type', null),
             'worked_time' => $request->input('worked_time', 0),
             'payment_status' => $request->input('payment_status', null),
@@ -54,7 +54,7 @@ class SprintsController extends Controller
 
         ]);
 
-        return $sprint->load('user', 'project','project.owner');
+        return $sprint->load('user', 'project','project.owner', 'currency');
 
     }
 
@@ -97,6 +97,11 @@ class SprintsController extends Controller
 
         $input = $request->all();
 
+        //if payment - get currency cource
+        // if($sprint->payment_status) {
+        //     $currency = $request->input('currency');
+        // }
+
         $dateClose = $input['closed_date']
                 ? \Carbon\Carbon::parse($input['closed_date'])->tz('UTC')->format('Y-m-d H:i:s'):
                 \Carbon\Carbon::now()->tz('UTC')->format('Y-m-d H:i:s');
@@ -108,7 +113,7 @@ class SprintsController extends Controller
             $sprint->started_at;
 
         $sprint->rate = $request->input('rate');
-        $sprint->currency = $request->input('currency');
+        $sprint->currency_id = $request->input('currency');
         $sprint->rate_type = $request->input('rate_type', 'hourly');
         $sprint->worked_time = $request->input('worked_time', 0);
         $sprint->payment_status =  $request->input('payment_status', false);

@@ -19,7 +19,7 @@ class CreateProjectsTable extends Migration
             $table->integer('customer_id')->index();
             $table->integer('rate')->nullable();
             $table->enum('rate_type', ['hourly', 'fixed'])->nullable();
-            $table->enum('currency', ['$', '₴'])->nullable();
+            $table->integer('currency_id');
             $table->text('description')->nullable();
             $table->dateTime('started_at')->nullable()->index();
             $table->boolean('archive')->default(false);

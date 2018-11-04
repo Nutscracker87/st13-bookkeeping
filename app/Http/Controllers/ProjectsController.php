@@ -15,7 +15,7 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        return Project::with('owner')->get();
+        return Project::with('owner', 'currency')->get();
     }
 
     /**
@@ -55,7 +55,7 @@ class ProjectsController extends Controller
             // 'project_id' => $request->input('project'),
             'name' => $request->input('name'),
             'rate' => $request->input('rate'),
-            'currency' => $request->input('currency', '$'),
+            'currency_id' => $request->input('currency', '1'),
             'rate_type' => $request->input('rate_type', 'hourly'),
             // 'worked_time' => $request->input('worked_time', 0),
             // 'payment_status' => $request->input('payment_status', null),
@@ -63,7 +63,7 @@ class ProjectsController extends Controller
             'started_at' => $dateStart,
             'archive' => $request->input('archive', false),
             'archived_at' => $request->input('archived_at', null),
-            
+
         ]);
 
         return $project->load('owner');

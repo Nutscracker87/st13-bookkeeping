@@ -20,8 +20,10 @@
                 <div class="form-group col-md-1">
                     <label for="sprint-payment-currency">Currency</label>
                     <select class="form-control" id="sprint-payment-currency" name="currency" v-model="form.currency">
-                        <option value="$" selected>$</option>
-                        <option value="₴">грн</option>
+                        <option v-for="currency in currencies"
+                            :key="currency.id" v-bind:value="currency.id">
+                            {{ currency.symbol }}
+                        </option>
                     </select>
                 </div>
                 <div class="form-group col-md-2">
@@ -73,7 +75,8 @@ export default {
   data() {
     //  console.log('wtf');
     return {
-      projects: []
+      projects: [],
+      currencies: [],
     };
   },
   computed: {
@@ -88,8 +91,8 @@ export default {
         // project: {value: "this.project.id" , default: 'this.project.id'},
         rate: { value: this.sprint.rate, default: this.sprint.rate },
         currency: {
-          value: this.sprint.currency,
-          default: this.sprint.currency
+          value: this.sprint.currency.id,
+          default: this.sprint.currency.id
         },
         rate_type: {
           value: this.sprint.rate_type,
@@ -110,7 +113,7 @@ export default {
     setSprintRate(projectId) {
       var project = this.projects.find(item => item.id == projectId);
       this.form.rate = project.rate ? project.rate : "";
-      this.form.currency = project.currency ? project.currency : "";
+      this.form.currency = project.currency.id ? project.currency.id : "1";
       this.form.rate_type = project.rate_type ? project.rate_type : "";
     },
     onSubmit() {
@@ -121,6 +124,11 @@ export default {
     }
   },
   created() {
+    axios.get("/api/currencies").then(({ data }) => {
+      this.currencies = data;
+      //this.form.currency = this.currencies.length > 0 ? this.currencies[0].id : '';
+    });
+
     axios.get("/api/projects").then(({ data }) => {
       this.projects = data;
     });

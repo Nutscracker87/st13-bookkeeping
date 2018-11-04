@@ -32,8 +32,10 @@
         <div class="form-group col-md-1">
           <label for="sprint-payment-currency">Currency</label>
           <select class="form-control" id="sprint-payment-currency" name="currency" v-model="form.currency">
-            <option value="$" selected>$</option>
-            <option value="₴">грн</option>
+              <option v-for="currency in currencies"
+                  :key="currency.id" v-bind:value="currency.id">
+                  {{ currency.symbol }}
+              </option>
           </select>
         </div>
         <div class="form-group col-md-2">
@@ -93,7 +95,7 @@ export default {
         project: { value: "", default: "" },
         // project: {value: "this.project.id" , default: 'this.project.id'},
         rate: { value: "", default: "" },
-        currency: { value: "$", default: "$" },
+        currency: { value: "1", default: "1" },
         rate_type: { value: "hourly", default: "hourly" },
         started_at: { value: "", default: "" },
         worked_time: { value: "0", default: "0" },
@@ -102,13 +104,14 @@ export default {
         payment_status: { value: "1", default: "1" }
       }),
       projects: [],
+      currencies: [],
     };
   },
   methods: {
     setSprintRate(projectId) {
       var project = this.projects.find(item => item.id == projectId);
       this.form.rate = project.rate ? project.rate : '';
-      this.form.currency = project.currency ? project.currency : '';
+      this.form.currency = project.currency ? project.currency.id : '1';
       this.form.rate_type = project.rate_type  ? project.rate_type : '';
 
     },
@@ -120,11 +123,16 @@ export default {
     }
   },
   created() {
+    axios.get("/api/currencies").then(({ data }) => {
+      this.currencies = data;
+      //this.form.currency = this.currencies.length > 0 ? this.currencies[0].id : '';
+    });
+
     axios.get("/api/projects").then(({ data }) => {
       this.projects = data;
       this.form.project = this.projects.length > 0 ? this.projects[0].id : '';
       this.form.rate = this.projects.length > 0 ? this.projects[0].rate : '';
-      this.form.currency = this.projects.length > 0 ? this.projects[0].currency : '';
+      this.form.currency = this.projects.length > 0 ? this.projects[0].currency.id : '1';
       this.form.rate_type = this.projects.length > 0 ? this.projects[0].rate_type : '';
     });
   }

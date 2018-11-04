@@ -16,7 +16,7 @@ class WorkersController extends Controller
     public function index()
     {
         return User::select(['id', 'name'])
-            ->with('activeSprints', 'activeSprints.project', 'activeSprints.project.owner')
+            ->with('activeSprints', 'activeSprints.project', 'activeSprints.project.owner', 'activeSprints.currency')
             ->get();
     }
 

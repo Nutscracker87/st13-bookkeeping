@@ -7,21 +7,21 @@
                     <div class="col-sm-4">
                         {{ capitalizeFirstLetter(sprint.project.name) }} ({{capitalizeFirstLetter(sprint.project.owner.name)}})
                     </div>
-                    <div class="col-sm-2">{{ capitalizeFirstLetter(sprint.rate_type) }} rate: {{ sprint.rate }} {{ sprint.currency }}</div>
+                    <div class="col-sm-2">{{ capitalizeFirstLetter(sprint.rate_type) }} rate: {{ sprint.rate }} {{ sprint.currency.symbol }}</div>
                     <div class="col-sm-2">Total Worked: {{ minutesToTime(sprint.worked_time) }}</div>
                     <div class="col-sm-4">
 
-                        <b-button variant="info" 
+                        <b-button variant="info"
                             @click.stop="$emit('finish_sprint_confirmation', sprint)">
                             Finish Sprint
-                        </b-button>                        
-                        <b-button 
-                            @click.stop="$emit('confirm_delete_sprint', {data: sprint, target: $event.target})" 
+                        </b-button>
+                        <b-button
+                            @click.stop="$emit('confirm_delete_sprint', {data: sprint, target: $event.target})"
                             class="btn btn-danger">
                             <i class="fas fa-trash-alt"></i>
                         </b-button>
                     </div>
-                               
+
                 </div>
             </b-card-header>
             <!-- <b-collapse v-bind:id="`sprint-${index}`" accordion="my-accordion" role="tabpanel">

@@ -13,7 +13,7 @@ class Sprint extends Model
      */
     protected $fillable = [
         'project_id', 'rate', 'rate_type', 'worked_time', 'payment_status',
-        'notes', 'started_at', 'closed_at', 'currency'
+        'notes', 'started_at', 'closed_at', 'currency_id'
     ];
 
     public function user()
@@ -24,5 +24,10 @@ class Sprint extends Model
     public function project()
     {
         return $this->belongsTo(Project::class)->select(['id', 'name', 'customer_id']);
-    }    
+    }
+
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
 }

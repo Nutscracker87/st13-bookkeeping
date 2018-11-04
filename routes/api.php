@@ -49,3 +49,8 @@ Route::get('/payments', 'PaymentsController@index');
 Route::post('/payments', 'PaymentsController@store');
 
 Route::post('/statistics', 'StatisticsController@show');
+
+Route::get('/currencies', function (Request $request) {
+    return App\Currency::select(['id', 'name', 'symbol'])
+        ->get();
+});
