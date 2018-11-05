@@ -203,10 +203,7 @@ export default {
       this.form.dateStart = moment(dates.start).subtract(1, 'days').toDate();
       this.form.dateEnd = moment(dates.end).subtract(1, 'days').toDate();
 
-      this.form
-        .post("/api/statistics")
-        .then(data => console.log(data))
-        .catch(errors => console.log(errors));
+      this.getStatsForPeriod();
 
     },
     moment: function() {

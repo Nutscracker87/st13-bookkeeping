@@ -90322,11 +90322,7 @@ Vue.use(BootstrapVue, VueRangedatePickerWinslow, moment);
       this.form.dateStart = moment(dates.start).subtract(1, 'days').toDate();
       this.form.dateEnd = moment(dates.end).subtract(1, 'days').toDate();
 
-      this.form.post("/api/statistics").then(function (data) {
-        return console.log(data);
-      }).catch(function (errors) {
-        return console.log(errors);
-      });
+      this.getStatsForPeriod();
     },
 
     moment: function (_moment) {
