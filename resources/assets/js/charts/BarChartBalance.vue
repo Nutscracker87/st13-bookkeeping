@@ -19,8 +19,8 @@ export default {
     stockChart: StockChart
   },
   props: {
-    startDate: String,
-    endDate: String,
+    startDate: Date,
+    endDate: Date,
     expense: Number,
     income: Number,
     balance: Number
@@ -31,6 +31,8 @@ export default {
   },
   computed: {
     chartData: function() {
+      let startDate = moment(this.startDate).format('MMM Do YY');
+      let endDate = moment(this.endDate).format('MMM Do YY');
       return {
             chart: {
                 type: 'column'
@@ -39,7 +41,7 @@ export default {
                 text: `Balance: ${this.balance}$`
             },
             xAxis: {
-                categories: [`${this.startDate}-${this.endDate}`]
+                categories: [`${startDate}-${endDate}`]
             },
             yAxis: {
                  title:{

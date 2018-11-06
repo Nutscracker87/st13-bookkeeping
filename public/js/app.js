@@ -80272,7 +80272,10 @@ var Form = function () {
     key: 'reset',
     value: function reset() {
       for (var field in this.originalData) {
-        this[field] = this.originalData[field].default;
+        if (typeof this.originalData[field].default != 'undefined') {
+          // debugger;
+          this[field] = this.originalData[field].default;
+        }
       }
 
       this.errors.clear();
@@ -80300,7 +80303,7 @@ var Form = function () {
 
     /**
      * Submit the form
-     * 
+     *
      * @param {string} requestType
      * @param {url} url
      */
@@ -90197,8 +90200,14 @@ Vue.use(BootstrapVue, VueRangedatePickerWinslow, moment);
       balance: 0,
       projects: [],
       form: new Form({
-        dateStart: { value: moment().subtract(1, 'months').toDate(), default: moment().subtract(1, 'months').toDate() },
-        dateEnd: { value: moment().toDate(), default: moment().toDate() }
+        dateStart: {
+          value: moment().subtract(1, 'months').toDate()
+          // default: moment().subtract(1, 'months').toDate()
+        },
+        dateEnd: {
+          value: moment().toDate()
+          // default: moment().toDate()
+        }
         // notes: { value: "", default: "" }
       }),
       initRange: {
@@ -90285,43 +90294,10 @@ Vue.use(BootstrapVue, VueRangedatePickerWinslow, moment);
     //   this.modalInfo.content = JSON.stringify(item, null, 2)
     //   this.$root.$emit('bv::show::modal', 'modalInfo', button)
     // },
-    // resetModal() {
-    //   this.modalInfo.title = "";
-    //   this.modalInfo.content = "";
-    // },
-    // onFiltered(filteredItems) {
-    //   // Trigger pagination to update the number of buttons/pages due to filtering
-    //   this.totalRows = filteredItems.length;
-    //   this.currentPage = 1;
-    // },
-    // addProject(customer) {
-    //   this.items.push(customer);
-    //   this.showAddNew = false;
-    // },
-    // confirmDelete(item, index, button) {
-    //   this.modalInfo.title = `Delete Project`;
-    //   this.modalInfo.content = `Are you Sure Want to Delete ${item.name}?`;
-    //   this.modalInfo.item = item;
-    //   this.$root.$emit("bv::show::modal", "deleteModal", button);
-    // },
-    // handleDelete() {
-    //   // this.$root.$emit("bv::hide::modal", "deleteModal");
-    //   // console.log(this.modalInfo.item);
-    //   axios.delete(`api/projects/${this.modalInfo.item.id}`).then(
-    //     ({ data }) => {
-    //       this.items = this.items.filter(e => e.id !== data.id);
-    //       this.hideDeleteModal();
-    //     },
-    //     err => comsole.log(err)
-    //   );
-    // },
-    // hideDeleteModal() {
-    //   this.$root.$emit("bv::hide::modal", "deleteModal");
-    // }
     setDateRange: function setDateRange(dates) {
+      //console.log(dates);
       this.form.dateStart = moment(dates.start).subtract(1, 'days').toDate();
       this.form.dateEnd = moment(dates.end).subtract(1, 'days').toDate();
-
       this.getStatsForPeriod();
     },
 
@@ -90348,6 +90324,7 @@ Vue.use(BootstrapVue, VueRangedatePickerWinslow, moment);
       //     // this.totalRows = data.length;
       //   })
       //   .then(() => (this.showLoader = false));
+
       this.form.post("/api/statistics").then(function (statistics) {
         _this.expense = parseFloat(statistics.expense);
         _this.income = parseFloat(statistics.income);
@@ -90361,7 +90338,6 @@ Vue.use(BootstrapVue, VueRangedatePickerWinslow, moment);
   created: function created() {
     //make an ajax request to our server
     this.showLoader = true;
-
     // this.dateStartdateStart = moment().subtract(1, 'months').toDate();
     // this.dateEnd = moment().toDate();
     this.getStatsForPeriod();
@@ -90455,8 +90431,8 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_highcharts_vue___default.a);
         stockChart: __WEBPACK_IMPORTED_MODULE_2__StockChart___default.a
     },
     props: {
-        startDate: String,
-        endDate: String,
+        startDate: Date,
+        endDate: Date,
         expense: Number,
         income: Number,
         balance: Number
@@ -90467,6 +90443,8 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_highcharts_vue___default.a);
 
     computed: {
         chartData: function chartData() {
+            var startDate = moment(this.startDate).format('MMM Do YY');
+            var endDate = moment(this.endDate).format('MMM Do YY');
             return {
                 chart: {
                     type: 'column'
@@ -90475,7 +90453,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_highcharts_vue___default.a);
                     text: 'Balance: ' + this.balance + '$'
                 },
                 xAxis: {
-                    categories: [this.startDate + '-' + this.endDate]
+                    categories: [startDate + '-' + endDate]
                 },
                 yAxis: {
                     title: {
@@ -91586,8 +91564,8 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_highcharts_vue___default.a);
     stockChart: __WEBPACK_IMPORTED_MODULE_2__StockChart___default.a
   },
   props: {
-    startDate: String,
-    endDate: String,
+    startDate: Date,
+    endDate: Date,
     projects: Array
   },
   data: function data() {
@@ -91611,12 +91589,15 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_highcharts_vue___default.a);
       }];
     },
     chartData: function chartData() {
+      var startDate = moment(this.startDate).format('MMM Do YY');
+      var endDate = moment(this.endDate).format('MMM Do YY');
+
       return {
         chart: {
           type: "pie"
         },
         title: {
-          text: "Time worked on projects " + this.startDate + "-" + this.endDate
+          text: "Time worked on projects " + startDate + "-" + endDate
         },
         plotOptions: {
           series: {
@@ -91723,8 +91704,8 @@ var render = function() {
         [
           _c("bar-chart-balance", {
             attrs: {
-              startDate: _vm.moment(this.form.dateStart).format("MMM Do YY"),
-              endDate: _vm.moment(this.form.dateEnd).format("MMM Do YY"),
+              startDate: this.form.dateStart,
+              endDate: this.form.dateEnd,
               expense: this.expense,
               income: this.income,
               balance: this.balance
@@ -91740,8 +91721,8 @@ var render = function() {
         [
           _c("pie-chart-projects-time", {
             attrs: {
-              startDate: _vm.moment(this.form.dateStart).format("MMM Do YY"),
-              endDate: _vm.moment(this.form.dateEnd).format("MMM Do YY"),
+              startDate: this.form.dateStart,
+              endDate: this.form.dateEnd,
               projects: this.projects
             }
           })

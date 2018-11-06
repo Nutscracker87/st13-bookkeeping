@@ -12,8 +12,8 @@
             </div>
             <div class="col-sm-6">
               <bar-chart-balance
-                :startDate="moment(this.form.dateStart).format('MMM Do YY')"
-                :endDate="moment(this.form.dateEnd).format('MMM Do YY')"
+                :startDate="this.form.dateStart"
+                :endDate="this.form.dateEnd"
                 :expense="this.expense"
                 :income="this.income"
                 :balance="this.balance"
@@ -21,8 +21,8 @@
             </div>
             <div class="col-sm-6">
               <pie-chart-projects-time
-                :startDate="moment(this.form.dateStart).format('MMM Do YY')"
-                :endDate="moment(this.form.dateEnd).format('MMM Do YY')"
+                :startDate="this.form.dateStart"
+                :endDate="this.form.dateEnd"
                 :projects="this.projects"
               ></pie-chart-projects-time>
             </div>
@@ -78,8 +78,14 @@ export default {
       balance: 0,
       projects: [],
       form: new Form({
-        dateStart: { value: moment().subtract(1, 'months').toDate(), default: moment().subtract(1, 'months').toDate() },
-        dateEnd: { value: moment().toDate(), default: moment().toDate() },
+        dateStart: {
+          value: moment().subtract(1, 'months').toDate(),
+          // default: moment().subtract(1, 'months').toDate()
+        },
+        dateEnd: {
+          value: moment().toDate(),
+          // default: moment().toDate()
+        },
         // notes: { value: "", default: "" }
       }),
       initRange: {
@@ -166,45 +172,11 @@ export default {
     //   this.modalInfo.content = JSON.stringify(item, null, 2)
     //   this.$root.$emit('bv::show::modal', 'modalInfo', button)
     // },
-    // resetModal() {
-    //   this.modalInfo.title = "";
-    //   this.modalInfo.content = "";
-    // },
-    // onFiltered(filteredItems) {
-    //   // Trigger pagination to update the number of buttons/pages due to filtering
-    //   this.totalRows = filteredItems.length;
-    //   this.currentPage = 1;
-    // },
-    // addProject(customer) {
-    //   this.items.push(customer);
-    //   this.showAddNew = false;
-    // },
-    // confirmDelete(item, index, button) {
-    //   this.modalInfo.title = `Delete Project`;
-    //   this.modalInfo.content = `Are you Sure Want to Delete ${item.name}?`;
-    //   this.modalInfo.item = item;
-    //   this.$root.$emit("bv::show::modal", "deleteModal", button);
-    // },
-    // handleDelete() {
-    //   // this.$root.$emit("bv::hide::modal", "deleteModal");
-    //   // console.log(this.modalInfo.item);
-    //   axios.delete(`api/projects/${this.modalInfo.item.id}`).then(
-    //     ({ data }) => {
-    //       this.items = this.items.filter(e => e.id !== data.id);
-    //       this.hideDeleteModal();
-    //     },
-    //     err => comsole.log(err)
-    //   );
-    // },
-    // hideDeleteModal() {
-    //   this.$root.$emit("bv::hide::modal", "deleteModal");
-    // }
     setDateRange(dates) {
+      //console.log(dates);
       this.form.dateStart = moment(dates.start).subtract(1, 'days').toDate();
       this.form.dateEnd = moment(dates.end).subtract(1, 'days').toDate();
-
       this.getStatsForPeriod();
-
     },
     moment: function() {
       return moment();
@@ -217,6 +189,7 @@ export default {
       //     // this.totalRows = data.length;
       //   })
       //   .then(() => (this.showLoader = false));
+
       this.form
         .post("/api/statistics")
         .then(statistics => {
@@ -231,7 +204,6 @@ export default {
   created() {
     //make an ajax request to our server
     this.showLoader = true;
-
     // this.dateStartdateStart = moment().subtract(1, 'months').toDate();
     // this.dateEnd = moment().toDate();
     this.getStatsForPeriod();

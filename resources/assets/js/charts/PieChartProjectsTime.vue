@@ -18,8 +18,8 @@ export default {
     stockChart: StockChart
   },
   props: {
-    startDate: String,
-    endDate: String,
+    startDate: Date,
+    endDate: Date,
     projects: Array,
   },
   data() {
@@ -46,12 +46,15 @@ export default {
             ];
     },
     chartData: function() {
+      let startDate = moment(this.startDate).format('MMM Do YY');
+      let endDate = moment(this.endDate).format('MMM Do YY');
+
       return {
         chart: {
           type: "pie"
         },
         title: {
-          text: `Time worked on projects ${this.startDate}-${this.endDate}`
+          text: `Time worked on projects ${startDate}-${endDate}`
         },
         plotOptions: {
           series: {
