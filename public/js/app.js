@@ -91597,7 +91597,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_highcharts_vue___default.a);
           type: "pie"
         },
         title: {
-          text: "Time worked on projects " + startDate + "-" + endDate
+          text: "Time spent on projects. Current sprints and closed at " + startDate + "-" + endDate
         },
         plotOptions: {
           series: {

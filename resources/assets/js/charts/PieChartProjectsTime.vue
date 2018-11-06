@@ -54,7 +54,7 @@ export default {
           type: "pie"
         },
         title: {
-          text: `Time worked on projects ${startDate}-${endDate}`
+          text: `Time spent on projects. Current sprints and closed at ${startDate}-${endDate}`
         },
         plotOptions: {
           series: {
