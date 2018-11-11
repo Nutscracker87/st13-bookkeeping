@@ -3,7 +3,13 @@
     <!-- User Interface controls -->
     <b-row>
       <b-col class="my-1">
-        <b-btn v-b-toggle.add_worker variant="success" @click="showAddNew = !showAddNew" :aria-expanded="showAddNew ? 'true' : 'false'">Add Worker</b-btn>
+        <b-btn
+          v-b-toggle.add_worker
+          variant="success"
+          @click="showAddNew = !showAddNew"
+          :aria-expanded="showAddNew ? 'true' : 'false'">
+          {{ showAddNew ? 'Close' : 'Add Worker' }}
+        </b-btn>
         <b-collapse id="add_worker" v-model="showAddNew" class="mt-2">
           <b-card>
             <add-worker @worker_added="addWorker"></add-worker>

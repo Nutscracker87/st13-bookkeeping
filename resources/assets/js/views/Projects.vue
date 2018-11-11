@@ -2,16 +2,20 @@
   <b-container>
     <b-row>
       <b-col class="my-1">
-        <b-btn v-b-toggle.add_project variant="success" 
-          @click="showAddNew = !showAddNew" 
-          :aria-expanded="showAddNew ? 'true' : 'false'">Add New</b-btn>
+        <b-btn
+          v-b-toggle.add_customer
+          variant="success"
+          @click="showAddNew = !showAddNew"
+          :aria-expanded="showAddNew ? 'true' : 'false'">
+          {{ showAddNew ? 'Close' : 'Add New' }}
+        </b-btn>
         <b-collapse id="add_project" v-model="showAddNew" class="mt-2">
           <b-card>
             <add-project @project_added="addProject"></add-project>
           </b-card>
         </b-collapse>
       </b-col>
-    </b-row>      
+    </b-row>
     <b-row>
       <b-col md="4" class="my-1">
         <b-form-group horizontal label="Filter" class="mb-0">
@@ -53,10 +57,10 @@
         <b-button size="sm" @click.stop="row.toggleDetails">
           {{ row.detailsShowing ? 'Close' : 'Sprints' }}
         </b-button> -->
-        <b-button size="sm" @click.stop="confirmDelete(row.item, row.index, $event.target)" 
+        <b-button size="sm" @click.stop="confirmDelete(row.item, row.index, $event.target)"
           class="btn btn-danger">
           Delete
-        </b-button>        
+        </b-button>
       </template>
       <template slot="row-details" slot-scope="row">
         <b-card>
@@ -67,8 +71,8 @@
             <li v-for="(value, key) in row.item.sprints" :key="key">{{ key }}: {{ value }}</li>
           </ul>   -->
           <active-sprints v-bind:sprints="row.item.sprints"></active-sprints>
-          
-          <add-project v-bind:user="row.item.id" 
+
+          <add-project v-bind:user="row.item.id"
             @sprint_added="sprint => row.item.sprints.push(sprint)"></add-project>
         </b-card>
       </template>
@@ -89,17 +93,17 @@
         {{ modalInfo.content }}
       </div>
       <div slot="modal-footer" class="w-100">
-         <b-btn @click="handleDelete" 
-          size="sm" class="float-right 
+         <b-btn @click="handleDelete"
+          size="sm" class="float-right
           btn btn-danger mx-1">Delete</b-btn>
-         <b-btn size="sm" 
-          class="float-right" 
-          variant="primary" 
+         <b-btn size="sm"
+          class="float-right"
+          variant="primary"
           @click="hideDeleteModal">
            Close
          </b-btn>
-       </div>      
-    </b-modal>    
+       </div>
+    </b-modal>
 
   </b-container>
 </template>
@@ -116,12 +120,12 @@ export default {
     // props: {
     //     programmers: Array
     // },
-  components: { 
+  components: {
     'add-project': AddProject,
     'active-sprints': ActiveSprints,
     "preloader": Preloader
   },
-    
+
   data () {
     return {
       showAddNew: false,
@@ -142,8 +146,8 @@ export default {
       sortDirection: 'asc',
       filter: null,
       modalInfo: { title: '', content: '' },
-      
-          
+
+
     }
   },
   computed: {
@@ -153,7 +157,7 @@ export default {
         .filter(f => f.sortable)
         .map(f => { return { text: f.label, value: f.key } })
     }
-  },  
+  },
   methods: {
     // info (item, index, button) {
     //   this.modalInfo.title = `Row index: ${index}`
@@ -193,7 +197,7 @@ export default {
     },
     hideDeleteModal(){
       this.$root.$emit("bv::hide::modal", "deleteModal");
-    },    
+    },
   },
   created() {
       //make an ajax request to our server

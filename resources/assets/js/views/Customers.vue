@@ -3,7 +3,13 @@
     <!-- User Interface controls -->
     <b-row>
       <b-col class="my-1">
-        <b-btn v-b-toggle.add_customer variant="success" @click="showAddNew = !showAddNew" :aria-expanded="showAddNew ? 'true' : 'false'">Add New</b-btn>
+        <b-btn
+          v-b-toggle.add_customer
+          variant="success"
+          @click="showAddNew = !showAddNew"
+          :aria-expanded="showAddNew ? 'true' : 'false'">
+          {{ showAddNew ? 'Close' : 'Add New' }}
+        </b-btn>
         <b-collapse id="add_customer" v-model="showAddNew" class="mt-2">
           <b-card>
             <add-customer @customer_added="addCustomer"></add-customer>
@@ -31,15 +37,15 @@
     </b-row>
 
     <!-- Main table element -->
-    <b-table show-empty stacked="md" 
-      :items="items" 
-      :fields="fields" 
-      :current-page="currentPage" 
-      :per-page="perPage" 
-      :filter="filter" 
-      :sort-by.sync="sortBy" 
-      :sort-desc.sync="sortDesc" 
-      :sort-direction="sortDirection" 
+    <b-table show-empty stacked="md"
+      :items="items"
+      :fields="fields"
+      :current-page="currentPage"
+      :per-page="perPage"
+      :filter="filter"
+      :sort-by.sync="sortBy"
+      :sort-desc.sync="sortDesc"
+      :sort-direction="sortDirection"
       @filtered="onFiltered">
       <template slot="name" slot-scope="row">{{row.value}}</template>
       <!-- <template slot="isActive" slot-scope="row">{{row.value?'Yes :)':'No :('}}</template> -->
@@ -50,7 +56,7 @@
         <b-button size="sm" @click.stop="row.toggleDetails">
           {{ row.detailsShowing ? 'Close' : 'Sprints' }}
         </b-button> -->
-        <b-button size="sm" @click.stop="confirmDelete(row.item, row.index, $event.target)" 
+        <b-button size="sm" @click.stop="confirmDelete(row.item, row.index, $event.target)"
           class="btn btn-danger">
           Delete
         </b-button>
@@ -65,7 +71,7 @@
             <li v-for="(value, key) in row.item.sprints" :key="key">{{ key }}: {{ value }}</li>
           </ul>   -->
           <!-- <active-sprints v-bind:sprints="row.item.sprints"></active-sprints>
-          
+
           <add-sprint v-bind:user="row.item.id"></add-sprint> -->
         </b-card>
       </template>
@@ -87,16 +93,16 @@
         {{ modalInfo.content }}
       </div>
       <div slot="modal-footer" class="w-100">
-         <b-btn @click="handleDelete" 
-          size="sm" class="float-right 
+         <b-btn @click="handleDelete"
+          size="sm" class="float-right
           btn btn-danger mx-1">Delete</b-btn>
-         <b-btn size="sm" 
-          class="float-right" 
-          variant="primary" 
+         <b-btn size="sm"
+          class="float-right"
+          variant="primary"
           @click="hideDeleteModal">
            Close
          </b-btn>
-       </div>      
+       </div>
     </b-modal>
 
     <!-- <b-modal @hidden="onHidden">

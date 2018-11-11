@@ -2,9 +2,13 @@
   <b-container>
     <b-row>
       <b-col class="my-1">
-        <b-btn v-b-toggle.add_payment variant="success"
+        <b-btn
+          v-b-toggle.add_payment
+          variant="success"
           @click="showAddNew = !showAddNew"
-          :aria-expanded="showAddNew ? 'true' : 'false'">Add New Payment</b-btn>
+          :aria-expanded="showAddNew ? 'true' : 'false'">
+          {{ showAddNew ? 'Close' : 'Add New Payment' }}
+        </b-btn>
         <b-collapse id="add_payment" v-model="showAddNew" class="mt-2">
           <b-card>
             <add-payment @payment_added="addPayment"></add-payment>

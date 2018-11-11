@@ -84596,6 +84596,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 Vue.use(BootstrapVue);
 
@@ -86506,7 +86512,13 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("Add Worker")]
+                [
+                  _vm._v(
+                    "\n        " +
+                      _vm._s(_vm.showAddNew ? "Close" : "Add Worker") +
+                      "\n      "
+                  )
+                ]
               ),
               _vm._v(" "),
               _c(
@@ -86893,6 +86905,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_ActiveSprints_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_ActiveSprints_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Preloader_vue__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Preloader_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Preloader_vue__);
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -87562,7 +87580,13 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("Add New")]
+                [
+                  _vm._v(
+                    "\n        " +
+                      _vm._s(_vm.showAddNew ? "Close" : "Add New") +
+                      "\n      "
+                  )
+                ]
               ),
               _vm._v(" "),
               _c(
@@ -87765,7 +87789,7 @@ var render = function() {
               _c(
                 "b-btn",
                 {
-                  staticClass: "float-right \n        btn btn-danger mx-1",
+                  staticClass: "float-right\n        btn btn-danger mx-1",
                   attrs: { size: "sm" },
                   on: { click: _vm.handleDelete }
                 },
@@ -87859,6 +87883,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_ActiveSprints_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_ActiveSprints_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Preloader_vue__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_Preloader_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_Preloader_vue__);
+//
+//
+//
+//
 //
 //
 //
@@ -88763,8 +88791,8 @@ var render = function() {
                   directives: [
                     {
                       name: "b-toggle",
-                      rawName: "v-b-toggle.add_project",
-                      modifiers: { add_project: true }
+                      rawName: "v-b-toggle.add_customer",
+                      modifiers: { add_customer: true }
                     }
                   ],
                   attrs: {
@@ -88777,7 +88805,13 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("Add New")]
+                [
+                  _vm._v(
+                    "\n        " +
+                      _vm._s(_vm.showAddNew ? "Close" : "Add New") +
+                      "\n      "
+                  )
+                ]
               ),
               _vm._v(" "),
               _c(
@@ -89025,7 +89059,7 @@ var render = function() {
               _c(
                 "b-btn",
                 {
-                  staticClass: "float-right \n        btn btn-danger mx-1",
+                  staticClass: "float-right\n        btn btn-danger mx-1",
                   attrs: { size: "sm" },
                   on: { click: _vm.handleDelete }
                 },
@@ -89117,6 +89151,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Preloader_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Preloader_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_AddPayment_vue__ = __webpack_require__(386);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_AddPayment_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_AddPayment_vue__);
+//
+//
+//
+//
 //
 //
 //
@@ -89785,7 +89823,13 @@ var render = function() {
                     }
                   }
                 },
-                [_vm._v("Add New Payment")]
+                [
+                  _vm._v(
+                    "\n        " +
+                      _vm._s(_vm.showAddNew ? "Close" : "Add New Payment") +
+                      "\n      "
+                  )
+                ]
               ),
               _vm._v(" "),
               _c(

@@ -13,15 +13,19 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 
 // Route::get('/programmers', function (Request $request) {
 //     return App\User::select(['id', 'name'])
 //         ->with('activeSprints', 'activeSprints.project', 'activeSprints.project.owner')
 //         ->get();
+// });
+
+// Route::group(['middleware' => 'admin'], function() {
+
 // });
 
 Route::get('/programmers', 'WorkersController@index');
