@@ -163,9 +163,9 @@ class StatisticsController extends Controller
 
         // [$totalIncome, $totalExpence];
         //return false;
-        $balance = number_format(($totalIncome-$totalExpense), 2);
-        $totalExpense = number_format($totalExpense,2);
-        $totalIncome = number_format($totalIncome, 2);
+        $balance = number_format(($totalIncome-$totalExpense), 2, '.', '');
+        $totalExpense = number_format($totalExpense,2,  '.', '');
+        $totalIncome = number_format($totalIncome, 2 , '.', '');
         return [
             'income' => $totalIncome,
             'expense' => $totalExpense,
